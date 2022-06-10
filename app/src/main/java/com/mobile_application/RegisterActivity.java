@@ -10,19 +10,19 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Toast;
 
-import com.mobile_application.utils.*;
-
 import com.mobile_application.databinding.ActivityMainBinding;
+import com.mobile_application.databinding.RegisterBinding;
+import com.mobile_application.utils.UserDAO;
 
-public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding viewBinding;
+public class RegisterActivity extends AppCompatActivity {
+    private RegisterBinding viewBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        viewBinding = RegisterBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
-        viewBinding.buttonLogin.setOnClickListener(new View.OnClickListener() {
+        viewBinding.buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new Thread(){
@@ -31,8 +31,9 @@ public class MainActivity extends AppCompatActivity {
                         UserDAO userDao = new UserDAO();
                         int res = 0;
                         try {
-                            res = userDao.select(viewBinding.editTextAccount.getText().toString(), viewBinding.editTextPassword.getText().toString());
+                            res = userDao.add(viewBinding.editTextAccount.getText().toString(), viewBinding.editTextName.getText().toString(), viewBinding.editTextPassword.getText().toString());
                             hand.sendEmptyMessage(res);
+                            System.out.println(res);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -45,25 +46,17 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void handleMessage(Message msg) {
                     if(msg.what == 0) {
-                        Toast.makeText(MainActivity.this, "连接失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "连接失败", Toast.LENGTH_SHORT).show();
                     }
                     else if(msg.what == 2) {
-                        Toast.makeText(MainActivity.this, "登录失败，请检查用户名或密码", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "存在相同账号", Toast.LENGTH_SHORT).show();
                     }
                     else {
-
+                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
                 }
             };
         });
-
-        viewBinding.buttonRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 }
