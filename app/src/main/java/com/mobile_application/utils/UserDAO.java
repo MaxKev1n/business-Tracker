@@ -17,7 +17,7 @@ public class UserDAO {
                 return 0;
             }
             state = conn.createStatement();
-            String sql = "select * from user where account = " + account + " and password = " + password;
+            String sql = "select * from user where account = '" + account + "' and password = '" + password + "'";
             res = state.executeQuery(sql);
             if(res.next()) {
                 return 1;

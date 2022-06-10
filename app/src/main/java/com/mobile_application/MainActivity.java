@@ -14,6 +14,9 @@ import com.mobile_application.utils.*;
 
 import com.mobile_application.databinding.ActivityMainBinding;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding viewBinding;
 
@@ -44,14 +47,22 @@ public class MainActivity extends AppCompatActivity {
             final Handler hand = new Handler() {
                 @Override
                 public void handleMessage(Message msg) {
-                    if(msg.what == 0) {
-                        Toast.makeText(MainActivity.this, "连接失败", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(msg.what == 2) {
+                    if(msg.what == 2) {
                         Toast.makeText(MainActivity.this, "登录失败，请检查用户名或密码", Toast.LENGTH_SHORT).show();
                     }
                     else {
-
+                        int connectFlag = 0;
+                        if(msg.what == 0) {
+                            Toast.makeText(MainActivity.this, "连接失败，进入本地模式", Toast.LENGTH_SHORT).show();
+                            connectFlag = 0;
+                        }
+                        else {
+                            Toast.makeText(MainActivity.this, "登录成功，进行同步", Toast.LENGTH_SHORT).show();
+                            connectFlag = 1;
+                        }
+                        Intent intent = new Intent(MainActivity.this, Sign.class);
+                        intent.putExtra("connectFlag", String.valueOf(connectFlag));
+                        startActivity(intent);
                     }
                 }
             };
@@ -60,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         viewBinding.buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(MainActivity.this, Sign.class);
                 startActivity(intent);
             }
         });

@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile_application">
         <activity
+            android:name=".Sign"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity

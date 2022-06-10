@@ -45,14 +45,21 @@ public class RegisterActivity extends AppCompatActivity {
             final Handler hand = new Handler() {
                 @Override
                 public void handleMessage(Message msg) {
-                    if(msg.what == 0) {
-                        Toast.makeText(RegisterActivity.this, "连接失败", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(msg.what == 2) {
-                        Toast.makeText(RegisterActivity.this, "存在相同账号", Toast.LENGTH_SHORT).show();
+                    if(msg.what == 2) {
+                        Toast.makeText(RegisterActivity.this, "注册失败，存在相同账号", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                        int connectFlag = 0;
+                        if(msg.what == 0) {
+                            Toast.makeText(RegisterActivity.this, "连接失败，进入本地模式", Toast.LENGTH_SHORT).show();
+                            connectFlag = 0;
+                        }
+                        else {
+                            Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                            connectFlag = 1;
+                        }
+                        Intent intent = new Intent(RegisterActivity.this, Sign.class);
+                        intent.putExtra("connectFlag", String.valueOf(connectFlag));
                         startActivity(intent);
                     }
                 }
