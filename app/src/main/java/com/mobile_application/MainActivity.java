@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -60,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "登录成功，进行同步", Toast.LENGTH_SHORT).show();
                             connectFlag = 1;
                         }
+
+                        LocalDb localDb = new LocalDb(MainActivity.this, "app.db", null, 1, viewBinding.editTextAccount.getText().toString());
+                        SQLiteDatabase sqliteDatabase = localDb.getReadableDatabase();
+
                         Intent intent = new Intent(MainActivity.this, Sign.class);
                         intent.putExtra("connectFlag", String.valueOf(connectFlag));
                         startActivity(intent);
