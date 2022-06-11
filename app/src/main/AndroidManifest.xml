@@ -17,12 +17,6 @@
             android:exported="false"
             android:label="@string/title_activity_home" />
         <activity
-            android:name=".Study"
-            android:exported="false" />
-        <activity
-            android:name=".Display"
-            android:exported="false" />
-        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity

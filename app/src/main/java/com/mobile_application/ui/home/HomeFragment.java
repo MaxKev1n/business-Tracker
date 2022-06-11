@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.mobile_application.Display;
 import com.mobile_application.databinding.FragmentHomeBinding;
 import com.mobile_application.utils.LocalDb;
 import com.mobile_application.utils.UserDAO;
