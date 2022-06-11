@@ -13,7 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile_application">
         <activity
-            android:name=".Sign"
+            android:name=".Study"
+            android:exported="false" />
+        <activity
+            android:name=".Display"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"

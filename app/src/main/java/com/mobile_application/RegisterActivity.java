@@ -58,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                             connectFlag = 1;
                         }
-                        Intent intent = new Intent(RegisterActivity.this, Sign.class);
+                        Intent intent = new Intent(RegisterActivity.this, Display.class);
                         intent.putExtra("connectFlag", String.valueOf(connectFlag));
                         startActivity(intent);
                     }

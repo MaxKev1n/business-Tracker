@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f4f4f4"
-    tools:context=".Sign">
+    tools:context=".Display">
 
     <TextView
         android:id="@+id/textView"
@@ -66,11 +66,11 @@
         android:id="@+id/totalList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="累计任务"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/viewData"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/viewData" />
 
     <TextView
@@ -78,7 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="92dp"
+        android:layout_marginEnd="64dp"
         android:text="累计时长"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/viewData"
@@ -89,7 +89,7 @@
         android:layout_width="85dp"
         android:layout_height="30dp"
         android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/totalList"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/totalList" />
 
     <TextView
@@ -97,6 +97,24 @@
         android:layout_width="85dp"
         android:layout_height="30dp"
         android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/totalTime"
+        app:layout_constraintEnd_toEndOf="@+id/totalTime"
         app:layout_constraintTop_toBottomOf="@+id/totalTime" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        app:layout_constraintStart_toStartOf="@+id/viewData"
+        app:layout_constraintTop_toTopOf="@+id/totalList"
+        app:srcCompat="@drawable/ic_chart_bar" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/totalTime"
+        app:layout_constraintTop_toTopOf="@+id/totalTime"
+        app:srcCompat="@drawable/ic_time" />
 </androidx.constraintlayout.widget.ConstraintLayout>

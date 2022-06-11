@@ -9,23 +9,22 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.format.Time;
 import android.widget.CalendarView;
-import android.widget.Toast;
 
-import com.mobile_application.databinding.ActivitySignBinding;
+import com.mobile_application.databinding.ActivityDisplayBinding;
 import com.mobile_application.utils.LocalDb;
 import com.mobile_application.utils.UserDAO;
 
 import java.util.List;
 
-public class Sign extends AppCompatActivity {
-    private ActivitySignBinding viewBinding;
+public class Display extends AppCompatActivity {
+    private ActivityDisplayBinding viewBinding;
     public int connectFlag;
     public String myAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewBinding = ActivitySignBinding.inflate(getLayoutInflater());
+        viewBinding = ActivityDisplayBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
         Intent intent = getIntent();
         connectFlag = Integer.valueOf(intent.getStringExtra("connectFlag")).intValue();
@@ -34,7 +33,7 @@ public class Sign extends AppCompatActivity {
         Time time = new Time();
         time.setToNow();
         String curDate = String.valueOf(time.year) + "-" + String.valueOf(time.month) + "-" + String.valueOf(time.monthDay);
-        LocalDb localDb = new LocalDb(Sign.this, "app.db", null, 1, myAccount);
+        LocalDb localDb = new LocalDb(Display.this, "app.db", null, 1, myAccount);
         SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
         UserDAO userDAO = new UserDAO();
         List<String> curData = userDAO.selectUserSign(sqliteDatabase, myAccount, curDate);

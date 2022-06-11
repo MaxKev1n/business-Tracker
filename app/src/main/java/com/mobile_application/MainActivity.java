@@ -11,12 +11,8 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Toast;
 
-import com.mobile_application.utils.*;
-
 import com.mobile_application.databinding.ActivityMainBinding;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import com.mobile_application.utils.*;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding viewBinding;
@@ -65,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                         LocalDb localDb = new LocalDb(MainActivity.this, "app.db", null, 1, viewBinding.editTextAccount.getText().toString());
                         SQLiteDatabase sqliteDatabase = localDb.getReadableDatabase();
 
-                        Intent intent = new Intent(MainActivity.this, Sign.class);
+                        Intent intent = new Intent(MainActivity.this, Display.class);
                         intent.putExtra("connectFlag", String.valueOf(connectFlag));
                         intent.putExtra("myAccount", viewBinding.editTextAccount.getText().toString());
                         startActivity(intent);
@@ -77,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         viewBinding.buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Sign.class);
+                Intent intent = new Intent(MainActivity.this, Display.class);
                 startActivity(intent);
             }
         });
