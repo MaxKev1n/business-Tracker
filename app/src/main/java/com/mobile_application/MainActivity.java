@@ -16,10 +16,28 @@ import android.widget.Toast;
 import com.mobile_application.databinding.ActivityMainBinding;
 import com.mobile_application.utils.*;
 
+import java.sql.SQLException;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding viewBinding;
     private SharedPreferences preferences;
     private SharedPreferences .Editor editor;
+
+    public void synchronizeRecord(String account, UserDAO userDAO) throws Exception {
+        List<List<String>> listRes = userDAO.selectRemoteData(account);
+        if(listRes != null) {
+            for(int i = 0;i < listRes.size();i++){
+                List<String> temp = listRes.get(i);
+                String date = temp.get(0).toString();
+                String listCount = temp.get(1).toString();
+                String studyTime = temp.get(2).toString();
+                LocalDb localDb = new LocalDb(this, "app.db", null, 1, account);
+                SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
+                userDAO.updateUserData(sqliteDatabase, account, date, listCount, studyTime);
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
                         int res = 0;
                         try {
                             res = userDao.select(viewBinding.editTextAccount.getText().toString(), viewBinding.editTextPassword.getText().toString());
+                            if(res == 1) {
+                                synchronizeRecord(viewBinding.editTextPassword.getText().toString(), userDao);
+                            }
                             hand.sendEmptyMessage(res);
                         } catch (Exception e) {
                             e.printStackTrace();
