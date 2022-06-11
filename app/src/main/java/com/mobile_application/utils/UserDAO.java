@@ -139,6 +139,35 @@ public class UserDAO {
         return null;
     }
 
+    public int updateUser(String account, String date, String listCount, String studyTime) throws Exception {
+        Connection conn = null;
+        Statement state = null;
+        ResultSet res = null;
+        try {
+            conn = JDBCUtils.getConn();
+            if(conn == null) {
+                return 0;
+            }
+            state = conn.createStatement();
+            String sql = "UPDATE `app`.`"+ account +"` SET `listcount` = '" + listCount +"',`studytime` = '"+ studyTime + "' WHERE (`curdate` = '"+ date + "')";
+            res = state.executeQuery(sql);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(res != null) {
+                res.close();
+            }
+            if(state != null) {
+                state.close();
+            }
+            if(conn != null) {
+                conn.close();
+            }
+        }
+        return 0;
+    }
+
     //SQLite
     public void insertUserSign(SQLiteDatabase db, String myAccount, String curDate, int listCount, int studyTime) {
         ContentValues values = new ContentValues();
@@ -176,5 +205,26 @@ public class UserDAO {
         res.add(totalList);
         res.add(totalTime);
         return res;
+    }
+
+    public void updateUserData(SQLiteDatabase db, String account, String date, String listCount, String studyTime) throws Exception {
+        String selectSql = "select * from " + "'" + account + "'" + " where curdate = " + "'" + date + "';";
+        Cursor cursor = db.rawQuery(selectSql, null);
+        List<String> res = new ArrayList<>();
+        if(cursor.moveToNext()) {
+            int listCountIndex = cursor.getColumnIndex("listcount");
+            int studyTimeIndex = cursor.getColumnIndex("studytime");
+            int localListCount = Integer.valueOf(cursor.getString(listCountIndex).toString());
+            int localStudyTime = Integer.valueOf(cursor.getString(studyTimeIndex).toString());
+            int updateListCount = localListCount > Integer.valueOf(listCount) ? localListCount : Integer.valueOf(listCount);
+            int updateStudyTime = localStudyTime > Integer.valueOf(studyTime) ? localStudyTime : Integer.valueOf(studyTime);
+            if(updateListCount > localListCount || updateStudyTime > localListCount) {
+                String updateSql = "replace into " + account + "(curdate, listcount, studytime) values ('" + date + "', '" + updateListCount + "', '" + updateStudyTime + "');";
+                db.execSQL(updateSql);
+            }
+        }
+        else {
+            insertUserSign(db, account, date, Integer.valueOf(listCount), Integer.valueOf(studyTime));
+        }
     }
 }

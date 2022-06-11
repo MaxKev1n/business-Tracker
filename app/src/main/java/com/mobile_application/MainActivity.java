@@ -24,14 +24,17 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private SharedPreferences .Editor editor;
 
-    public void synchronizeRecord(String account, UserDAO userDAO) throws SQLException {
+    public void synchronizeRecord(String account, UserDAO userDAO) throws Exception {
         List<List<String>> listRes = userDAO.selectRemoteData(account);
         if(listRes != null) {
             for(int i = 0;i < listRes.size();i++){
                 List<String> temp = listRes.get(i);
-                for(int j = 0;j < 3;j++){
-                    System.out.println(temp.get(j));
-                }
+                String date = temp.get(0).toString();
+                String listCount = temp.get(1).toString();
+                String studyTime = temp.get(2).toString();
+                LocalDb localDb = new LocalDb(this, "app.db", null, 1, account);
+                SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
+                userDAO.updateUserData(sqliteDatabase, account, date, listCount, studyTime);
             }
         }
     }

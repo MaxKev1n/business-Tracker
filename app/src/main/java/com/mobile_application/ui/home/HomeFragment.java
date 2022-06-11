@@ -46,12 +46,19 @@ public class HomeFragment extends Fragment {
 
         Time time = new Time();
         time.setToNow();
-        String curDate = String.valueOf(time.year) + "-" + String.valueOf(time.month) + "-" + String.valueOf(time.monthDay);
+        String curDate = String.valueOf(time.year) + "-" + String.valueOf(time.month + 1) + "-" + String.valueOf(time.monthDay);
+        System.out.println(curDate);
         LocalDb localDb = new LocalDb((AppCompatActivity) getActivity(), "app.db", null, 1, myAccount);
         SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
         UserDAO userDAO = new UserDAO();
         List<String> curData = userDAO.selectUserSign(sqliteDatabase, myAccount, curDate);
-        String curDisplay = "您今日已完成" + "<font color=black><b><big><big>" + curData.get(0) + "</big></big></b></font>" + "项任务，学习时间为" + "<font color=black><b><big><big>" + curData.get(1) + "</big></big></b></font>" + "分钟";
+        String curDisplay;
+        if(curData.isEmpty()){
+            curDisplay = "您在该日完成" + "<font color=black><b><big><big>0</big></big></b></font>项任务，学习时间为<font color=black><b><big><big>0</big></big></b></font>分钟";
+        }
+        else {
+            curDisplay = "您在该日完成" + "<font color=black><b><big><big>" + curData.get(0) + "</big></big></b></font>" + "项任务，学习时间为" + "<font color=black><b><big><big>" + curData.get(1) + "</big></big></b></font>" + "分钟";
+        }
         viewBinding.textSign.setText(Html.fromHtml(curDisplay));
         List<Integer> curTotal = userDAO.selectUserTotal(sqliteDatabase, myAccount);
         String curListDisplay = "<font color=black><b><big><big>" + String.valueOf(curTotal.get(0)) + "</big></big></b></font>项";
@@ -63,7 +70,7 @@ public class HomeFragment extends Fragment {
         viewBinding.calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                String date = String.valueOf(i) + "-" + String.valueOf(i1) + "-" + String.valueOf(i2);
+                String date = String.valueOf(i) + "-" + String.valueOf(i1 + 1) + "-" + String.valueOf(i2);
                 List<String> selectRes = userDAO.selectUserSign(sqliteDatabase, myAccount, date);
                 String display;
                 if(selectRes.isEmpty()){
