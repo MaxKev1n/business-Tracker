@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,12 +18,57 @@ import com.mobile_application.utils.*;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding viewBinding;
+    private SharedPreferences preferences;
+    private SharedPreferences .Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isRemember = preferences.getBoolean("rememberPassword", false);
+        boolean isAutoLogin = preferences.getBoolean("autoLogin", false);
+        if(isRemember) {
+            String account = preferences.getString("account", "");
+            String password = preferences.getString("password", "");
+            viewBinding.editTextAccount.setText(account);
+            viewBinding.editTextPassword.setText(password);
+            viewBinding.rememberPassword.setChecked(true);
+        }
+
+        System.out.println(isAutoLogin);
+        if(isAutoLogin && isRemember) {
+            viewBinding.autoLogin.setChecked(true);
+            viewBinding.rememberPassword.setChecked(true);
+
+            viewBinding.buttonLogin.post(new Runnable() {
+                @Override
+                public void run() {
+                    viewBinding.buttonLogin.performClick();
+                }
+            });
+        }
+
+        viewBinding.autoLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(viewBinding.autoLogin.isChecked()) {
+                    viewBinding.rememberPassword.setChecked(true);
+                }
+            }
+        });
+
+        viewBinding.rememberPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!viewBinding.rememberPassword.isChecked()) {
+                    viewBinding.autoLogin.setChecked(false);
+                }
+            }
+        });
+
         viewBinding.buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,13 +105,23 @@ public class MainActivity extends AppCompatActivity {
                             connectFlag = 1;
                         }
 
-                        LocalDb localDb = new LocalDb(MainActivity.this, "app.db", null, 1, viewBinding.editTextAccount.getText().toString());
-                        SQLiteDatabase sqliteDatabase = localDb.getReadableDatabase();
+                        editor = preferences.edit();
+                        if(viewBinding.rememberPassword.isChecked()) {
+                            editor.putBoolean("rememberPassword", true);
+                            editor.putString("password", viewBinding.editTextPassword.getText().toString());
+                            editor.putBoolean("autoLogin", viewBinding.autoLogin.isChecked());
+                        }
+                        else{
+                            editor.clear();
+                        }
+                        editor.putString("account", viewBinding.editTextAccount.getText().toString());
+                        editor.apply();
 
                         Intent intent = new Intent(MainActivity.this, Home.class);
                         intent.putExtra("connectFlag", String.valueOf(connectFlag));
                         intent.putExtra("myAccount", viewBinding.editTextAccount.getText().toString());
                         startActivity(intent);
+                        finish();
                     }
                 }
             };

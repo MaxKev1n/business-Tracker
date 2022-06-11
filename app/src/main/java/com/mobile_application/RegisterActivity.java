@@ -61,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                         intent.putExtra("connectFlag", String.valueOf(connectFlag));
                         intent.putExtra("myAccount", viewBinding.editTextAccount.getText().toString());
                         startActivity(intent);
+                        finish();
                     }
                 }
             };
