@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                         LocalDb localDb = new LocalDb(MainActivity.this, "app.db", null, 1, viewBinding.editTextAccount.getText().toString());
                         SQLiteDatabase sqliteDatabase = localDb.getReadableDatabase();
 
-                        Intent intent = new Intent(MainActivity.this, Display.class);
+                        Intent intent = new Intent(MainActivity.this, Home.class);
                         intent.putExtra("connectFlag", String.valueOf(connectFlag));
                         intent.putExtra("myAccount", viewBinding.editTextAccount.getText().toString());
                         startActivity(intent);
