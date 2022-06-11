@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.format.Time;
 import android.widget.CalendarView;
 import android.widget.Toast;
@@ -37,7 +38,13 @@ public class Sign extends AppCompatActivity {
         SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
         UserDAO userDAO = new UserDAO();
         List<String> curData = userDAO.selectUserSign(sqliteDatabase, myAccount, curDate);
-        viewBinding.textSign.setText("您今日已完成" + curData.get(0) + "项任务，学习时间为" + curData.get(1) + "分钟");
+        String curDisplay = "您今日已完成" + "<font color=black><b><big><big>" + curData.get(0) + "</big></big></b></font>" + "项任务，学习时间为" + "<font color=black><b><big><big>" + curData.get(1) + "</big></big></b></font>" + "分钟";
+        viewBinding.textSign.setText(Html.fromHtml(curDisplay));
+        List<Integer> curTotal = userDAO.selectUserTotal(sqliteDatabase, myAccount);
+        String curListDisplay = "<font color=black><b><big><big>" + String.valueOf(curTotal.get(0)) + "</big></big></b></font>项";
+        String curTimeDisplay = "<font color=black><b><big><big>" + String.valueOf(curTotal.get(1)) + "</big></big></b></font>分钟";
+        viewBinding.totalListNum.setText(Html.fromHtml(curListDisplay));
+        viewBinding.totalTimeNum.setText(Html.fromHtml(curTimeDisplay));
         //userDAO.insertUserSign(sqliteDatabase, myAccount, curDate, 5, 10);
 
         viewBinding.calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -45,12 +52,14 @@ public class Sign extends AppCompatActivity {
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
                 String date = String.valueOf(i) + "-" + String.valueOf(i1) + "-" + String.valueOf(i2);
                 List<String> selectRes = userDAO.selectUserSign(sqliteDatabase, myAccount, date);
+                String display;
                 if(selectRes.isEmpty()){
-                    viewBinding.textSign.setText("您在该日完成0项任务，学习时间为0分钟");
+                    display = "您在该日完成" + "<font color=black><b><big><big>0</big></big></b></font>项任务，学习时间为<font color=black><b><big><big>0</big></big></b></font>分钟";
                 }
                 else {
-                    viewBinding.textSign.setText("您在该日完成" + selectRes.get(0) + "项任务，学习时间为" + selectRes.get(1) + "分钟");
+                    display = "您在该日完成" + "<font color=black><b><big><big>" + selectRes.get(0) + "</big></big></b></font>" + "项任务，学习时间为" + "<font color=black><b><big><big>" + selectRes.get(1) + "</big></big></b></font>" + "分钟";
                 }
+                viewBinding.textSign.setText(Html.fromHtml(display));
             }
         });
     }

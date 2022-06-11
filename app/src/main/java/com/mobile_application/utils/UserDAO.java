@@ -100,15 +100,32 @@ public class UserDAO {
     }
 
     public List<String> selectUserSign(SQLiteDatabase db, String myAccount, String curDate) {
-        String selectTable = "select * from " + "'" + myAccount + "'" + " where curdate = " + "'" + curDate + "';";
-        Cursor cursor = db.rawQuery(selectTable, null);
+        String selectSql = "select * from " + "'" + myAccount + "'" + " where curdate = " + "'" + curDate + "';";
+        Cursor cursor = db.rawQuery(selectSql, null);
         List<String> res = new ArrayList<>();
-        if(cursor.moveToNext()){
+        if(cursor.moveToNext()) {
             int listCountIndex = cursor.getColumnIndex("listcount");
             int studyTimeIndex = cursor.getColumnIndex("studytime");
             res.add(cursor.getString(listCountIndex));
             res.add(cursor.getString(studyTimeIndex));
         }
+        return res;
+    }
+
+    public List<Integer> selectUserTotal(SQLiteDatabase db, String myAccount) {
+        String selectSql = "select * from " + "'" + myAccount + "';";
+        Cursor cursor = db.rawQuery(selectSql, null);
+        int totalList = 0;
+        int totalTime = 0;
+        int listCountIndex = cursor.getColumnIndex("listcount");
+        int studyTimeIndex = cursor.getColumnIndex("studytime");
+        while(cursor.moveToNext()) {
+            totalList += Integer.valueOf(cursor.getString(listCountIndex));
+            totalTime += Integer.valueOf(cursor.getString(studyTimeIndex));
+        }
+        List<Integer> res = new ArrayList<>();
+        res.add(totalList);
+        res.add(totalTime);
         return res;
     }
 }

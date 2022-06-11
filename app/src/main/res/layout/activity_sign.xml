@@ -61,4 +61,42 @@
         app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintStart_toStartOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/totalList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="16dp"
+        android:text="累计任务"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/viewData"
+        app:layout_constraintTop_toTopOf="@+id/viewData" />
+
+    <TextView
+        android:id="@+id/totalTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="92dp"
+        android:text="累计时长"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/viewData"
+        app:layout_constraintTop_toTopOf="@+id/viewData" />
+
+    <TextView
+        android:id="@+id/totalListNum"
+        android:layout_width="85dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@+id/totalList"
+        app:layout_constraintTop_toBottomOf="@+id/totalList" />
+
+    <TextView
+        android:id="@+id/totalTimeNum"
+        android:layout_width="85dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@+id/totalTime"
+        app:layout_constraintTop_toBottomOf="@+id/totalTime" />
 </androidx.constraintlayout.widget.ConstraintLayout>
