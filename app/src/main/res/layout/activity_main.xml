@@ -22,24 +22,24 @@
         android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="72dp"
         android:text="登录"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
-        app:layout_constraintVertical_bias="0.302" />
+        app:layout_constraintTop_toBottomOf="@+id/autoLogin"
+        app:layout_constraintVertical_bias="0.243" />
 
     <EditText
         android:id="@+id/editTextAccount"
         android:layout_width="209dp"
         android:layout_height="55dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="160dp"
         android:ems="10"
         android:hint="用户账号"
         android:inputType="textPersonName"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,12 +47,12 @@
         android:id="@+id/editTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="56dp"
         android:ems="10"
         android:hint="密码"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextAccount" />
 
@@ -60,12 +60,12 @@
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="88dp"
         android:text="注册"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonLogin"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintTop_toTopOf="@+id/buttonLogin"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -86,6 +86,25 @@
         app:layout_constraintEnd_toStartOf="@+id/editTextPassword"
         app:layout_constraintTop_toTopOf="@+id/editTextPassword"
         app:srcCompat="@drawable/ic_lock_closed" />
+
+    <CheckBox
+        android:id="@+id/autoLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="自动登录"
+        app:layout_constraintStart_toStartOf="@+id/rememberPassword"
+        app:layout_constraintTop_toBottomOf="@+id/rememberPassword" />
+
+    <CheckBox
+        android:id="@+id/rememberPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="36dp"
+        android:text="记住密码"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
