@@ -1,10 +1,17 @@
 package com.mobile_application.utils;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import com.mobile_application.utils.LocalDb;
+
 import com.mobile_application.utils.JDBCUtils;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
     public int select(String account, String password) throws Exception {
@@ -82,5 +89,26 @@ public class UserDAO {
             }
         }
         return 0;
+    }
+
+    public void insertUserSign(SQLiteDatabase db, String myAccount, String curDate, int listCount, int studyTime) {
+        ContentValues values = new ContentValues();
+        values.put("curdate", curDate);
+        values.put("listcount", listCount);
+        values.put("studytime", studyTime);
+        db.insert(myAccount, null, values);
+    }
+
+    public List<String> selectUserSign(SQLiteDatabase db, String myAccount, String curDate) {
+        String selectTable = "select * from " + "'" + myAccount + "'" + " where curdate = " + "'" + curDate + "';";
+        Cursor cursor = db.rawQuery(selectTable, null);
+        List<String> res = new ArrayList<>();
+        if(cursor.moveToNext()){
+            int listCountIndex = cursor.getColumnIndex("listcount");
+            int studyTimeIndex = cursor.getColumnIndex("studytime");
+            res.add(cursor.getString(listCountIndex));
+            res.add(cursor.getString(studyTimeIndex));
+        }
+        return res;
     }
 }

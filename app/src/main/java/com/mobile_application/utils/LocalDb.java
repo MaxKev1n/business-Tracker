@@ -1,5 +1,6 @@
 package com.mobile_application.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,7 +18,7 @@ public class LocalDb extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String createTable = "create table " + myAccount + "(curdate date, listcount integer, studytime integer);";
+        String createTable = "create table " + myAccount + "(curdate text primary key, listcount integer, studytime integer);";
         sqLiteDatabase.execSQL(createTable);
         String selectTable = "select count(*) from sqlite_master where type='table' and name='" + myAccount + "'";
         Cursor cursor = sqLiteDatabase.rawQuery(selectTable, null);
@@ -35,4 +36,5 @@ public class LocalDb extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
+
 }

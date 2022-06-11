@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(MainActivity.this, Sign.class);
                         intent.putExtra("connectFlag", String.valueOf(connectFlag));
+                        intent.putExtra("myAccount", viewBinding.editTextAccount.getText().toString());
                         startActivity(intent);
                     }
                 }
