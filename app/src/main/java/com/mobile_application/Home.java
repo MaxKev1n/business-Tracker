@@ -14,7 +14,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.mobile_application.databinding.ActivityHomeBinding;
 
 public class Home extends AppCompatActivity {
-
     private ActivityHomeBinding viewBinding;
 
     @Override
