@@ -1,5 +1,6 @@
 package com.mobile_application;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -57,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                             connectFlag = 1;
                         }
-                        Intent intent = new Intent(RegisterActivity.this, Display.class);
+                        Intent intent = new Intent(RegisterActivity.this, Home.class);
                         intent.putExtra("connectFlag", String.valueOf(connectFlag));
                         intent.putExtra("myAccount", viewBinding.editTextAccount.getText().toString());
                         startActivity(intent);

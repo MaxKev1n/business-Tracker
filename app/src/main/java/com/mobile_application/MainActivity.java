@@ -1,5 +1,6 @@
 package com.mobile_application;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.mobile_application.databinding.ActivityMainBinding;
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                         LocalDb localDb = new LocalDb(MainActivity.this, "app.db", null, 1, viewBinding.editTextAccount.getText().toString());
                         SQLiteDatabase sqliteDatabase = localDb.getReadableDatabase();
 
-                        Intent intent = new Intent(MainActivity.this, Display.class);
+                        Intent intent = new Intent(MainActivity.this, Home.class);
                         intent.putExtra("connectFlag", String.valueOf(connectFlag));
                         intent.putExtra("myAccount", viewBinding.editTextAccount.getText().toString());
                         startActivity(intent);

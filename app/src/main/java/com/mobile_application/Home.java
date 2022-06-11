@@ -1,8 +1,5 @@
 package com.mobile_application;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,22 +7,39 @@ import android.text.Html;
 import android.text.format.Time;
 import android.widget.CalendarView;
 
-import com.mobile_application.databinding.ActivityDisplayBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
+import com.mobile_application.databinding.ActivityHomeBinding;
 import com.mobile_application.utils.LocalDb;
 import com.mobile_application.utils.UserDAO;
 
 import java.util.List;
 
-public class Display extends AppCompatActivity {
-    private ActivityDisplayBinding viewBinding;
+public class Home extends AppCompatActivity {
+
+    private ActivityHomeBinding viewBinding;
     public int connectFlag;
     public String myAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewBinding = ActivityDisplayBinding.inflate(getLayoutInflater());
+
+        viewBinding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.hide();
+        }
+
         Intent intent = getIntent();
         connectFlag = Integer.valueOf(intent.getStringExtra("connectFlag")).intValue();
         myAccount = intent.getStringExtra("myAccount");
@@ -33,7 +47,7 @@ public class Display extends AppCompatActivity {
         Time time = new Time();
         time.setToNow();
         String curDate = String.valueOf(time.year) + "-" + String.valueOf(time.month) + "-" + String.valueOf(time.monthDay);
-        LocalDb localDb = new LocalDb(Display.this, "app.db", null, 1, myAccount);
+        LocalDb localDb = new LocalDb(Home.this, "app.db", null, 1, myAccount);
         SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
         UserDAO userDAO = new UserDAO();
         List<String> curData = userDAO.selectUserSign(sqliteDatabase, myAccount, curDate);
@@ -61,5 +75,16 @@ public class Display extends AppCompatActivity {
                 viewBinding.textSign.setText(Html.fromHtml(display));
             }
         });
+
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_home);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(viewBinding.navView, navController);
     }
+
 }

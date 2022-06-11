@@ -12,12 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile_application">
+
         <activity
-            android:name=".Study"
-            android:exported="false" />
-        <activity
-            android:name=".Display"
-            android:exported="false" />
+            android:name=".Home"
+            android:exported="false"
+            android:label="@string/title_activity_home" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
