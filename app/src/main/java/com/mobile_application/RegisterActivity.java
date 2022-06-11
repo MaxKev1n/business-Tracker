@@ -10,7 +10,6 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Toast;
 
-import com.mobile_application.databinding.ActivityMainBinding;
 import com.mobile_application.databinding.RegisterBinding;
 import com.mobile_application.utils.UserDAO;
 
@@ -60,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                         Intent intent = new Intent(RegisterActivity.this, Display.class);
                         intent.putExtra("connectFlag", String.valueOf(connectFlag));
+                        intent.putExtra("myAccount", viewBinding.editTextAccount.getText().toString());
                         startActivity(intent);
                     }
                 }
