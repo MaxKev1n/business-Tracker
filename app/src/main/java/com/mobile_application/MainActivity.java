@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             res = userDao.select(viewBinding.editTextAccount.getText().toString(), viewBinding.editTextPassword.getText().toString());
                             if(res == 1) {
-                                synchronizeRecord(viewBinding.editTextPassword.getText().toString(), userDao);
+                                synchronizeRecord(viewBinding.editTextAccount.getText().toString(), userDao);
                             }
                             hand.sendEmptyMessage(res);
                         } catch (Exception e) {

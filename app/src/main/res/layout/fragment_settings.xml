@@ -7,6 +7,14 @@
     android:background="#f4f4f4"
     tools:context=".ui.settings.SettingsFragment">
 
+    <View
+        android:id="@+id/list4"
+        android:layout_width="324dp"
+        android:layout_height="38dp"
+        app:layout_constraintEnd_toEndOf="@+id/settingInfo"
+        app:layout_constraintStart_toStartOf="@+id/settingInfo"
+        app:layout_constraintTop_toBottomOf="@+id/listLine3" />
+
     <TextView
         android:id="@+id/text_settings"
         android:layout_width="match_parent"
@@ -45,6 +53,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userInfo" />
 
+    <View
+        android:id="@+id/listLine4"
+        android:layout_width="250dp"
+        android:layout_height="1dp"
+        android:background="#DEDEDE"
+        app:layout_constraintEnd_toEndOf="@+id/settingInfo"
+        app:layout_constraintStart_toStartOf="@+id/settingInfo"
+        app:layout_constraintTop_toBottomOf="@+id/list4" />
+
+    <View
+        android:id="@+id/listLine3"
+        android:layout_width="250dp"
+        android:layout_height="1dp"
+        android:background="#DEDEDE"
+        app:layout_constraintEnd_toEndOf="@+id/settingInfo"
+        app:layout_constraintStart_toStartOf="@+id/settingInfo"
+        app:layout_constraintTop_toBottomOf="@+id/list3" />
+
+    <TextView
+        android:id="@+id/listText3"
+        android:layout_width="110dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18dp"
+        android:text="查看用户记录"
+        app:layout_constraintStart_toEndOf="@+id/imageSearch"
+        app:layout_constraintTop_toBottomOf="@+id/listLine2" />
+
+    <View
+        android:id="@+id/list3"
+        android:layout_width="324dp"
+        android:layout_height="72dp"
+        app:layout_constraintEnd_toEndOf="@+id/settingInfo"
+        app:layout_constraintStart_toStartOf="@+id/settingInfo"
+        app:layout_constraintTop_toBottomOf="@+id/list2" />
+
     <TextView
         android:id="@+id/listText2"
         android:layout_width="75dp"
@@ -53,7 +98,7 @@
         android:layout_marginTop="8dp"
         android:text="网站：github.com/MaxKev1n/mobile_application"
         android:textSize="18dp"
-        app:layout_constraintStart_toEndOf="@+id/imageView10"
+        app:layout_constraintStart_toEndOf="@+id/imageWeb"
         app:layout_constraintTop_toBottomOf="@+id/listLine1" />
 
     <View
@@ -87,8 +132,8 @@
         android:id="@+id/imageSynTime"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginTop="4dp"
-        android:src="@drawable/ic_time"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_cloud_upload"
         app:layout_constraintStart_toStartOf="@+id/list1"
         app:layout_constraintTop_toTopOf="@+id/list1" />
 
@@ -105,16 +150,15 @@
 
     <EditText
         android:id="@+id/editList1"
-        android:layout_width="128dp"
-        android:layout_height="25dp
-"
+        android:layout_width="136dp"
+        android:layout_height="25dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="12dp"
         android:background="@null"
         android:ems="10"
-        android:inputType="textPersonName"
         android:gravity="center_vertical|right"
         android:hint="秒"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/list1"
         app:layout_constraintTop_toTopOf="@+id/list1"
         tools:ignore="MissingConstraints" />
@@ -171,7 +215,7 @@
         app:layout_constraintTop_toBottomOf="@+id/listLine1" />
 
     <ImageView
-        android:id="@+id/imageView10"
+        android:id="@+id/imageWeb"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginTop="8dp"
@@ -196,5 +240,65 @@
         android:text="注销"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/buttonConfirm" />
+
+    <ImageView
+        android:id="@+id/imageSearch"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_search"
+        app:layout_constraintStart_toStartOf="@+id/list3"
+        app:layout_constraintTop_toTopOf="@+id/list3" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="135dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:background="@null"
+        android:ems="10"
+        android:gravity="center_vertical|right"
+        android:hint="用户账号"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/list3"
+        app:layout_constraintTop_toBottomOf="@+id/listLine2" />
+
+    <Button
+        android:id="@+id/buttonSearch"
+        android:layout_width="64dp"
+        android:layout_height="41dp"
+        android:text="搜索"
+        app:layout_constraintEnd_toEndOf="@+id/editText3"
+        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+
+    <ImageView
+        android:id="@+id/imageViewShow"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_view_show"
+        app:layout_constraintStart_toStartOf="@+id/list4"
+        app:layout_constraintTop_toBottomOf="@+id/listLine3" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="110dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18dp"
+        android:text="查看权限"
+        app:layout_constraintStart_toEndOf="@+id/imageViewShow"
+        app:layout_constraintTop_toBottomOf="@+id/listLine3" />
+
+    <Switch
+        android:id="@+id/switchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/list4"
+        app:layout_constraintTop_toBottomOf="@+id/listLine3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

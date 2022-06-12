@@ -24,6 +24,7 @@ import com.mobile_application.databinding.FragmentHomeBinding;
 import com.mobile_application.utils.LocalDb;
 import com.mobile_application.utils.UserDAO;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class HomeFragment extends Fragment {
     private boolean isVisbleFlag = true;
     private static final String TAG = "HomeFragment";
 
-    public void totalDataDisplay(UserDAO userDAO, SQLiteDatabase sqliteDatabase) {
+    public void totalDataDisplay(UserDAO userDAO, SQLiteDatabase sqliteDatabase) throws Exception {
         List<Integer> curTotal = userDAO.selectUserTotal(sqliteDatabase, myAccount);
         if(curTotal != null) {
             String curListDisplay = "<font color=black><b><big><big>" + String.valueOf(curTotal.get(0)) + "</big></big></b></font>项";
@@ -78,7 +79,11 @@ public class HomeFragment extends Fragment {
         }
         viewBinding.textSign.setText(Html.fromHtml(curDisplay));
 
-        totalDataDisplay(userDAO, sqliteDatabase);
+        try {
+            totalDataDisplay(userDAO, sqliteDatabase);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //userDAO.insertUserSign(sqliteDatabase, myAccount, curDate, 5, 10);
 
@@ -114,6 +119,8 @@ public class HomeFragment extends Fragment {
                 while(connectFlag == 1 && isVisbleFlag == true) {
                     try {
                         userDAO.synchronizeRecord(myAccount, sqliteDatabase);
+                        java.util.Date date = new Date();
+                        userDAO.updateUserDate(myAccount, date);
                         totalDataDisplay(userDAO, sqliteDatabase);
                         Thread.sleep(timeToLoop);
                     } catch (Exception e) {

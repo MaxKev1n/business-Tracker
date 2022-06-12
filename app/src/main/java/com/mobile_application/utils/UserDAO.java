@@ -22,6 +22,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +41,7 @@ public class UserDAO {
                 return 0;
             }
             state = conn.createStatement();
-            String sql = "select * from user where account = '" + account + "' and password = '" + password + "'";
+            String sql = "select * from `user` where account = '" + account + "' and password = '" + password + "'";
             res = state.executeQuery(sql);
             if(res.next()) {
                 return 1;
@@ -74,13 +76,14 @@ public class UserDAO {
                 return 0;
             }
             state = conn.createStatement();
-            String sql = "select * from user where account =" + account;
+            String sql = "select * from `user` where account ='" + account +"'";
             res = state.executeQuery(sql);
             if(res.next()) {
                 return 2; //exist same account user
             }
             else {
-                sql = "insert into user (account, name, password) values(" + account + "," + name + "," + password + ");";
+                sql = "insert into `user` (account, name, password) values('" + account + "','" + name + "','" + password + "');";
+                Log.d(TAG, sql);
                 int r = state.executeUpdate(sql);
                 if(r != 0){
                     return 1; //insert success
@@ -117,9 +120,11 @@ public class UserDAO {
             }
             state = conn.createStatement();
             String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = 'app' and TABLE_NAME ='" + account + "';";
+            Log.d(TAG, sql);
             res = state.executeQuery(sql);
             if(res.next()) {
                 sql = "select * from " + account + ";";
+                Log.d(TAG, sql);
                 res = state.executeQuery(sql);
                 List<List<String>> listRes = new ArrayList<>();
                 while(res.next()) {
@@ -245,6 +250,61 @@ public class UserDAO {
         }
     }
 
+    public void updateUserView(String account, Boolean isView) throws Exception {
+        Connection conn = null;
+        PreparedStatement state = null;
+        try {
+            conn = JDBCUtils.getConn();
+            if(conn == null) {
+                return;
+            }
+            String sql = "UPDATE `app`.`user` SET view = ? where account = ?;";
+            state = conn.prepareStatement(sql);
+            int view = isView ? 1 : 0;
+            state.setInt(1, view);
+            state.setString(2, account);
+            state.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(state != null) {
+                state.close();
+            }
+            if(conn != null) {
+                conn.close();
+            }
+        }
+    }
+
+    public void updateUserDate(String account, Date date) throws Exception {
+        Connection conn = null;
+        PreparedStatement state = null;
+        try {
+            conn = JDBCUtils.getConn();
+            if(conn == null) {
+                return;
+            }
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String curDate = df.format(date);
+            String sql = "UPDATE `app`.`user` SET lastdate = ? where account = ?;";
+            state = conn.prepareStatement(sql);
+            state.setString(1, curDate);
+            state.setString(2, account);
+            state.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(state != null) {
+                state.close();
+            }
+            if(conn != null) {
+                conn.close();
+            }
+        }
+    }
+
     public String selectUserName(String account) throws Exception {
         Connection conn = null;
         Statement state = null;
@@ -278,6 +338,91 @@ public class UserDAO {
         return null;
     }
 
+    public int selectUserView(String account) throws Exception {
+        Connection conn = null;
+        Statement state = null;
+        ResultSet res = null;
+        try {
+            conn = JDBCUtils.getConn();
+            if(conn == null) {
+                return 2;
+            }
+            state = conn.createStatement();
+            String sql = "select * from user where account = '" + account + "';";
+            res = state.executeQuery(sql);
+            if(res.next()) {
+                int view = Integer.valueOf(res.getString("view").toString());
+                return view;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(res != null) {
+                res.close();
+            }
+            if(state != null) {
+                state.close();
+            }
+            if(conn != null) {
+                conn.close();
+            }
+        }
+        return 2;
+    }
+
+    public List<String> selectOtherData(String account) throws SQLException {
+        Connection conn = null;
+        Statement state = null;
+        ResultSet res = null;
+        try {
+            conn = JDBCUtils.getConn();
+            if(conn == null) {
+                return null;
+            }
+            state = conn.createStatement();
+            String selectSql = "SELECT * FROM user where account = '" + account + "' and view = '1';";
+            res = state.executeQuery(selectSql);
+            if(!res.next()) {
+                return null;
+            }
+            String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = 'app' and TABLE_NAME ='" + account + "';";
+            Log.d(TAG, sql);
+            res = state.executeQuery(sql);
+            if(res.next()) {
+                int totalList = 0;
+                int totalTime = 0;
+                sql = "select * from " + account + ";";
+                res = state.executeQuery(sql);
+                List<String> listRes = new ArrayList<>();
+                while(res.next()) {
+                    totalList += Integer.valueOf(res.getString("listcount"));
+                    totalTime += Integer.valueOf(res.getString("studytime"));
+                }
+                listRes.add(String.valueOf(totalList));
+                listRes.add(String.valueOf(totalTime));
+                return listRes;
+            }
+            else {
+                return null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(res != null) {
+                res.close();
+            }
+            if(state != null) {
+                state.close();
+            }
+            if(conn != null) {
+                conn.close();
+            }
+        }
+        return null;
+    }
+
     //SQLite
     public void insertUserSign(SQLiteDatabase db, String myAccount, String curDate, int listCount, int studyTime) {
         ContentValues values = new ContentValues();
@@ -288,6 +433,21 @@ public class UserDAO {
     }
 
     public List<String> selectUserSign(SQLiteDatabase db, String myAccount, String curDate) {
+        String selectTable = "select count(*) from sqlite_master where type='table' and name='" + myAccount + "'";
+        try {
+            Cursor cursor = db.rawQuery(selectTable, null);
+            if(cursor.moveToNext()) {
+                if(cursor.getInt(0) > 0) {
+                    Log.d(TAG, "exist table");
+                }
+                else {
+                    String createTable = "create table '" + myAccount + "' (curdate text primary key, listcount integer, studytime integer);";
+                    db.execSQL(createTable);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String selectSql = "select * from " + "'" + myAccount + "'" + " where curdate = " + "'" + curDate + "';";
         try {
             Cursor cursor = db.rawQuery(selectSql, null);
