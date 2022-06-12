@@ -4,6 +4,7 @@ import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -23,6 +24,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.mobile_application.Config;
 import com.mobile_application.databinding.FragmentSettingsBinding;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,7 +91,7 @@ public class SettingsFragment extends Fragment {
             if(data.getData() != null) {
                 Uri uri = data.getData();
                 String path = uri.getPath();
-                Log.d(TAG, path);
+                viewBinding.userImg.setImageURI(uri);
             }
         }
     }
