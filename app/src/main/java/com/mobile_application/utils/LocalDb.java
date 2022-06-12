@@ -22,14 +22,14 @@ public class LocalDb extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(createTable);
         String selectTable = "select count(*) from sqlite_master where type='table' and name='" + myAccount + "'";
         Cursor cursor = sqLiteDatabase.rawQuery(selectTable, null);
-        if(cursor.moveToNext()) {
+        /*if(cursor.moveToNext()) {
             if(cursor.getInt(0) > 0) {
                 System.out.println("CREATE SUCCESS");
             }
             else {
                 System.out.println("CREATE FAIL");
             }
-        }
+        }*/
     }
 
     @Override
