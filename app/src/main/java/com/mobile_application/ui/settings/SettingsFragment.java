@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mobile_application.Config;
+import com.mobile_application.R;
 import com.mobile_application.databinding.FragmentSettingsBinding;
 import com.mobile_application.utils.UserDAO;
 
@@ -45,7 +46,7 @@ import java.util.Map;
 public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding viewBinding;
-    private String myAccount;
+    private String myAccount = "default";
     private int connectFlag = 0;
     final static int FILE_REQUEST_CODE = 10086;
     private static final String TAG = "SettingsFragment";
@@ -63,9 +64,8 @@ public class SettingsFragment extends Fragment {
         viewBinding.editList1.setText(preferences.getString("synchronizeTime", "60"));
 
         Intent intent = ((AppCompatActivity) getActivity()).getIntent();
-        myAccount = intent.getStringExtra("myAccount");
         connectFlag = Integer.valueOf(intent.getStringExtra("connectFlag"));
-        viewBinding.textName.setText(myAccount);
+        myAccount = intent.getStringExtra("myAccount").toString();
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -76,6 +76,18 @@ public class SettingsFragment extends Fragment {
                     if(remoteBlob != null) {
                         byte[] bytes = remoteBlob.getBytes(1, (int)remoteBlob.length());
                         curBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        String savePath = getActivity().getFilesDir()+ "/imgs/";
+                        Log.d(TAG, savePath);
+                        File dir = new File(savePath);
+                        if(!dir.exists()) {
+                            dir.mkdir();
+                        }
+                        File saveFile = new File(savePath, "userImg.jpeg");
+                        saveFile.createNewFile();
+                        FileOutputStream saveImg = new FileOutputStream(saveFile);
+                        curBitmap.compress(Bitmap.CompressFormat.JPEG, 80, saveImg);
+                        saveImg.flush();
+                        saveImg.close();
                     }
                     else {
                         File userImg = new File(getActivity().getFilesDir()+ "/imgs/", "userImg.jpeg");
@@ -83,6 +95,7 @@ public class SettingsFragment extends Fragment {
                             curBitmap = BitmapFactory.decodeFile(getActivity().getFilesDir()+ "/imgs/userImg.jpeg");
                         }
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -103,7 +116,7 @@ public class SettingsFragment extends Fragment {
             e.printStackTrace();
         }
         viewBinding.userImg.setImageBitmap(curBitmap);
-
+        viewBinding.textName.setText(myAccount);
 
         viewBinding.buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +153,21 @@ public class SettingsFragment extends Fragment {
                 intent.setType("*/*");
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, FILE_REQUEST_CODE);
+            }
+        });
+
+        viewBinding.buttonWebRun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse("https://github.com/MaxKev1n/mobile_application");
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    intent.setClassName("com.android.chrome","com.google.android.apps.chrome.Main");
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
             }
         });
 

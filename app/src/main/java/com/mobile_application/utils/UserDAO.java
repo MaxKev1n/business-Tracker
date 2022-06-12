@@ -245,6 +245,39 @@ public class UserDAO {
         }
     }
 
+    public String selectUserName(String account) throws Exception {
+        Connection conn = null;
+        Statement state = null;
+        ResultSet res = null;
+        try {
+            conn = JDBCUtils.getConn();
+            if(conn == null) {
+                return null;
+            }
+            state = conn.createStatement();
+            String sql = "select * from user where account = '" + account + "';";
+            res = state.executeQuery(sql);
+            if(res.next()) {
+                String name = res.getString("name").toString();
+                return name;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(res != null) {
+                res.close();
+            }
+            if(state != null) {
+                state.close();
+            }
+            if(conn != null) {
+                conn.close();
+            }
+        }
+        return null;
+    }
+
     //SQLite
     public void insertUserSign(SQLiteDatabase db, String myAccount, String curDate, int listCount, int studyTime) {
         ContentValues values = new ContentValues();
@@ -256,15 +289,20 @@ public class UserDAO {
 
     public List<String> selectUserSign(SQLiteDatabase db, String myAccount, String curDate) {
         String selectSql = "select * from " + "'" + myAccount + "'" + " where curdate = " + "'" + curDate + "';";
-        Cursor cursor = db.rawQuery(selectSql, null);
-        List<String> res = new ArrayList<>();
-        if(cursor.moveToNext()) {
-            int listCountIndex = cursor.getColumnIndex("listcount");
-            int studyTimeIndex = cursor.getColumnIndex("studytime");
-            res.add(cursor.getString(listCountIndex));
-            res.add(cursor.getString(studyTimeIndex));
+        try {
+            Cursor cursor = db.rawQuery(selectSql, null);
+            List<String> res = new ArrayList<>();
+            if(cursor.moveToNext()) {
+                int listCountIndex = cursor.getColumnIndex("listcount");
+                int studyTimeIndex = cursor.getColumnIndex("studytime");
+                res.add(cursor.getString(listCountIndex));
+                res.add(cursor.getString(studyTimeIndex));
+            }
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return res;
+        return null;
     }
 
     public List<Integer> selectUserTotal(SQLiteDatabase db, String myAccount) {

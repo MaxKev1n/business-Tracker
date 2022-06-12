@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,12 +18,15 @@ import com.mobile_application.databinding.ActivityMainBinding;
 import com.mobile_application.utils.*;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding viewBinding;
     private SharedPreferences preferences;
     private SharedPreferences .Editor editor;
+    private static final String TAG = "MainActivity";
 
     public void synchronizeRecord(String account, UserDAO userDAO) throws Exception {
         LocalDb localDb = new LocalDb(this, "app.db", null, 1, viewBinding.editTextAccount.getText().toString());
