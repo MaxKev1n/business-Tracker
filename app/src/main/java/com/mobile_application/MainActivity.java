@@ -25,18 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences .Editor editor;
 
     public void synchronizeRecord(String account, UserDAO userDAO) throws Exception {
-        List<List<String>> listRes = userDAO.selectRemoteData(account);
-        if(listRes != null) {
-            for(int i = 0;i < listRes.size();i++){
-                List<String> temp = listRes.get(i);
-                String date = temp.get(0).toString();
-                String listCount = temp.get(1).toString();
-                String studyTime = temp.get(2).toString();
-                LocalDb localDb = new LocalDb(this, "app.db", null, 1, account);
-                SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
-                userDAO.updateUserData(sqliteDatabase, account, date, listCount, studyTime);
-            }
-        }
+        LocalDb localDb = new LocalDb(this, "app.db", null, 1, viewBinding.editTextAccount.getText().toString());
+        SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
+        userDAO.synchronizeRecord(account, sqliteDatabase);
     }
 
     @Override
@@ -56,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
             viewBinding.rememberPassword.setChecked(true);
         }
 
-        System.out.println(isAutoLogin);
         if(isAutoLogin && isRemember) {
             viewBinding.autoLogin.setChecked(true);
             viewBinding.rememberPassword.setChecked(true);

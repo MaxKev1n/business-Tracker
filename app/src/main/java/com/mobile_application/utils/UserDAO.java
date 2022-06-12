@@ -227,4 +227,18 @@ public class UserDAO {
             insertUserSign(db, account, date, Integer.valueOf(listCount), Integer.valueOf(studyTime));
         }
     }
+
+    //both
+    public void synchronizeRecord(String account, SQLiteDatabase db) throws Exception {
+        List<List<String>> listRes = selectRemoteData(account);
+        if(listRes != null) {
+            for(int i = 0;i < listRes.size();i++){
+                List<String> temp = listRes.get(i);
+                String date = temp.get(0).toString();
+                String listCount = temp.get(1).toString();
+                String studyTime = temp.get(2).toString();
+                updateUserData(db, account, date, listCount, studyTime);
+            }
+        }
+    }
 }
