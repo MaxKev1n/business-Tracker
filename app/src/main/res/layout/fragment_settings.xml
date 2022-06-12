@@ -85,8 +85,8 @@
 
     <ImageView
         android:id="@+id/imageSynTime"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginTop="4dp"
         android:src="@drawable/ic_time"
         app:layout_constraintStart_toStartOf="@+id/list1"
@@ -126,8 +126,8 @@
         android:layout_marginTop="96dp"
         android:text="确定"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.352"
+        app:layout_constraintStart_toEndOf="@+id/buttonLogOut"
         app:layout_constraintTop_toBottomOf="@+id/settingInfo" />
 
     <TextView
@@ -172,8 +172,8 @@
 
     <ImageView
         android:id="@+id/imageView10"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_network"
         app:layout_constraintStart_toStartOf="@+id/list2"
@@ -187,5 +187,14 @@
         android:text="跳转"
         app:layout_constraintEnd_toEndOf="@+id/list2"
         app:layout_constraintTop_toBottomOf="@+id/listLine1" />
+
+    <Button
+        android:id="@+id/buttonLogOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="96dp"
+        android:text="注销"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/buttonConfirm" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

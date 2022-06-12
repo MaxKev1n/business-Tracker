@@ -28,6 +28,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mobile_application.Config;
+import com.mobile_application.Home;
+import com.mobile_application.MainActivity;
 import com.mobile_application.R;
 import com.mobile_application.databinding.FragmentSettingsBinding;
 import com.mobile_application.utils.UserDAO;
@@ -168,6 +170,14 @@ public class SettingsFragment extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
                 }
+            }
+        });
+
+        viewBinding.buttonLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent((AppCompatActivity)getActivity(), MainActivity.class);
+                startActivity(intent);
             }
         });
 
