@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,14 +14,20 @@ import com.mobile_application.utils.LocalDb;
 
 import com.mobile_application.utils.JDBCUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserDAO {
+    private static final String TAG = "UserDAO";
     //MYSQl
     public int select(String account, String password) throws Exception {
         Connection conn = null;
@@ -173,7 +181,7 @@ public class UserDAO {
         return 0;
     }
 
-    public String selectUserImg(String account) throws Exception {
+    public Blob selectUserImg(String account) throws Exception {
         Connection conn = null;
         Statement state = null;
         ResultSet res = null;
@@ -186,10 +194,8 @@ public class UserDAO {
             String sql = "select * from user where account = '" + account + "';";
             res = state.executeQuery(sql);
             if(res.next()) {
-                return res.getString("image");
-            }
-            else {
-                return null;
+                Blob img = res.getBlob("image");
+                return img;
             }
 
         } catch (Exception e) {
@@ -206,6 +212,37 @@ public class UserDAO {
             }
         }
         return null;
+    }
+
+    public void updateUserImg(String account, Bitmap img) throws Exception {
+        Connection conn = null;
+        PreparedStatement state = null;
+        try {
+            conn = JDBCUtils.getConn();
+            if(conn == null) {
+                return;
+            }
+            Blob blob = conn.createBlob();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            img.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] data = stream.toByteArray();
+            blob.setBytes(1, data);
+            String sql = "UPDATE `app`.`user` SET image = ? where account = ?;";
+            state = conn.prepareStatement(sql);
+            state.setBlob(1, blob);
+            state.setString(2, account);
+            state.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(state != null) {
+                state.close();
+            }
+            if(conn != null) {
+                conn.close();
+            }
+        }
     }
 
     //SQLite
