@@ -24,13 +24,15 @@ import com.mobile_application.databinding.FragmentHomeBinding;
 import com.mobile_application.utils.LocalDb;
 import com.mobile_application.utils.UserDAO;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding viewBinding;
     public int connectFlag;
-    public String myAccount;
+    public String myAccount = "default";
     private boolean isVisbleFlag = true;
     private static final String TAG = "HomeFragment";
 
@@ -58,7 +60,7 @@ public class HomeFragment extends Fragment {
 
         Intent intent = ((AppCompatActivity) getActivity()).getIntent();
         connectFlag = Integer.valueOf(intent.getStringExtra("connectFlag")).intValue();
-        myAccount = intent.getStringExtra("myAccount");
+        myAccount = intent.getStringExtra("myAccount").toString();
 
         Time time = new Time();
         time.setToNow();

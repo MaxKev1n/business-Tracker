@@ -13,6 +13,9 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.mobile_application.databinding.ActivityHomeBinding;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Home extends AppCompatActivity {
     private ActivityHomeBinding viewBinding;
 
@@ -22,8 +25,6 @@ public class Home extends AppCompatActivity {
 
         viewBinding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
-
-
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
