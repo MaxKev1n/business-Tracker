@@ -1,10 +1,12 @@
 package com.mobile_application.ui.home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.mobile_application.Config;
 import com.mobile_application.MainActivity;
 import com.mobile_application.databinding.FragmentHomeBinding;
 import com.mobile_application.utils.LocalDb;
@@ -29,6 +32,7 @@ public class HomeFragment extends Fragment {
     public int connectFlag;
     public String myAccount;
     private boolean isVisbleFlag = true;
+    private static final String TAG = "HomeFragment";
 
     public void totalDataDisplay(UserDAO userDAO, SQLiteDatabase sqliteDatabase) {
         List<Integer> curTotal = userDAO.selectUserTotal(sqliteDatabase, myAccount);
@@ -96,11 +100,20 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 UserDAO userDAO = new UserDAO();
+                SharedPreferences preferences = Config.getConfig((AppCompatActivity) getActivity());
+                int timeToLoop;
+                if(preferences.getString("synchronizeTime", null) == null) {
+                    timeToLoop = 60000;
+                }
+                else {
+                    timeToLoop = Integer.valueOf(preferences.getString("synchronizeTime", null)) * 1000;
+                }
+                Log.d(TAG, String.valueOf(timeToLoop));
                 while(connectFlag == 1 && isVisbleFlag == true) {
                     try {
                         userDAO.synchronizeRecord(myAccount, sqliteDatabase);
                         totalDataDisplay(userDAO, sqliteDatabase);
-                        Thread.sleep(60000);
+                        Thread.sleep(timeToLoop);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
