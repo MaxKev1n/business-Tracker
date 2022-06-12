@@ -38,4 +38,14 @@ public class Config {
         }
         Log.d(TAG, "CONFIG SUCCESS");
     }
+
+    public static void clear(Context context) {
+        try {
+            preferences = context.getSharedPreferences(configPath, context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

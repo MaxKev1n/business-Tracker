@@ -176,6 +176,7 @@ public class SettingsFragment extends Fragment {
         viewBinding.buttonLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Config.clear((AppCompatActivity)getActivity());
                 Intent intent = new Intent((AppCompatActivity)getActivity(), MainActivity.class);
                 startActivity(intent);
             }

@@ -39,7 +39,7 @@ public class UserDAO {
                 return 0;
             }
             state = conn.createStatement();
-            String sql = "select * from user where account = '" + account + "' and password = '" + password + "'";
+            String sql = "select * from `user` where account = '" + account + "' and password = '" + password + "'";
             res = state.executeQuery(sql);
             if(res.next()) {
                 return 1;
@@ -74,13 +74,14 @@ public class UserDAO {
                 return 0;
             }
             state = conn.createStatement();
-            String sql = "select * from user where account =" + account;
+            String sql = "select * from `user` where account ='" + account +"'";
             res = state.executeQuery(sql);
             if(res.next()) {
                 return 2; //exist same account user
             }
             else {
-                sql = "insert into user (account, name, password) values(" + account + "," + name + "," + password + ");";
+                sql = "insert into `user` (account, name, password) values('" + account + "','" + name + "','" + password + "');";
+                Log.d(TAG, sql);
                 int r = state.executeUpdate(sql);
                 if(r != 0){
                     return 1; //insert success
@@ -117,6 +118,7 @@ public class UserDAO {
             }
             state = conn.createStatement();
             String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = 'app' and TABLE_NAME ='" + account + "';";
+            Log.d(TAG, sql);
             res = state.executeQuery(sql);
             if(res.next()) {
                 sql = "select * from " + account + ";";
@@ -288,6 +290,21 @@ public class UserDAO {
     }
 
     public List<String> selectUserSign(SQLiteDatabase db, String myAccount, String curDate) {
+        String selectTable = "select count(*) from sqlite_master where type='table' and name='" + myAccount + "'";
+        try {
+            Cursor cursor = db.rawQuery(selectTable, null);
+            if(cursor.moveToNext()) {
+                if(cursor.getInt(0) > 0) {
+                    Log.d(TAG, "exist table");
+                }
+                else {
+                    String createTable = "create table '" + myAccount + "' (curdate text primary key, listcount integer, studytime integer);";
+                    db.execSQL(createTable);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String selectSql = "select * from " + "'" + myAccount + "'" + " where curdate = " + "'" + curDate + "';";
         try {
             Cursor cursor = db.rawQuery(selectSql, null);

@@ -20,9 +20,9 @@ public class LocalDb extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String createTable = "create table " + myAccount + "(curdate text primary key, listcount integer, studytime integer);";
         sqLiteDatabase.execSQL(createTable);
-        String selectTable = "select count(*) from sqlite_master where type='table' and name='" + myAccount + "'";
+        /*String selectTable = "select count(*) from sqlite_master where type='table' and name='" + myAccount + "'";
         Cursor cursor = sqLiteDatabase.rawQuery(selectTable, null);
-        /*if(cursor.moveToNext()) {
+        if(cursor.moveToNext()) {
             if(cursor.getInt(0) > 0) {
                 System.out.println("CREATE SUCCESS");
             }
