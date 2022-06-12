@@ -7,6 +7,14 @@
     android:background="#f4f4f4"
     tools:context=".ui.settings.SettingsFragment">
 
+    <View
+        android:id="@+id/list4"
+        android:layout_width="324dp"
+        android:layout_height="38dp"
+        app:layout_constraintEnd_toEndOf="@+id/settingInfo"
+        app:layout_constraintStart_toStartOf="@+id/settingInfo"
+        app:layout_constraintTop_toBottomOf="@+id/listLine3" />
+
     <TextView
         android:id="@+id/text_settings"
         android:layout_width="match_parent"
@@ -44,6 +52,15 @@
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userInfo" />
+
+    <View
+        android:id="@+id/listLine4"
+        android:layout_width="250dp"
+        android:layout_height="1dp"
+        android:background="#DEDEDE"
+        app:layout_constraintEnd_toEndOf="@+id/settingInfo"
+        app:layout_constraintStart_toStartOf="@+id/settingInfo"
+        app:layout_constraintTop_toBottomOf="@+id/list4" />
 
     <View
         android:id="@+id/listLine3"
@@ -254,5 +271,34 @@
         android:text="搜索"
         app:layout_constraintEnd_toEndOf="@+id/editText3"
         app:layout_constraintTop_toBottomOf="@+id/editText3" />
+
+    <ImageView
+        android:id="@+id/imageViewShow"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_view_show"
+        app:layout_constraintStart_toStartOf="@+id/list4"
+        app:layout_constraintTop_toBottomOf="@+id/listLine3" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="110dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18dp"
+        android:text="查看权限"
+        app:layout_constraintStart_toEndOf="@+id/imageViewShow"
+        app:layout_constraintTop_toBottomOf="@+id/listLine3" />
+
+    <Switch
+        android:id="@+id/switchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/list4"
+        app:layout_constraintTop_toBottomOf="@+id/listLine3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

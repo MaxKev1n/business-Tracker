@@ -55,7 +55,7 @@ public class SettingsFragment extends Fragment {
     private int connectFlag = 0;
     final static int FILE_REQUEST_CODE = 10086;
     private static final String TAG = "SettingsFragment";
-    private Bitmap curBitmap;
+    private int isView = 0;
 
     private String searchResString = null;
     private boolean searchRes = false;
@@ -80,10 +80,11 @@ public class SettingsFragment extends Fragment {
             public void run() {
                 try {
                     UserDAO userDAO = new UserDAO();
+                    ((Home)getActivity()).isView = userDAO.selectUserView(myAccount);
                     Blob remoteBlob = userDAO.selectUserImg(myAccount);
                     if(remoteBlob != null) {
                         byte[] bytes = remoteBlob.getBytes(1, (int)remoteBlob.length());
-                        curBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        ((Home)getActivity()).curBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         String savePath = getActivity().getFilesDir()+ "/imgs/";
                         Log.d(TAG, savePath);
                         File dir = new File(savePath);
@@ -93,14 +94,14 @@ public class SettingsFragment extends Fragment {
                         File saveFile = new File(savePath, "userImg.jpeg");
                         saveFile.createNewFile();
                         FileOutputStream saveImg = new FileOutputStream(saveFile);
-                        curBitmap.compress(Bitmap.CompressFormat.JPEG, 80, saveImg);
+                        ((Home)getActivity()).curBitmap.compress(Bitmap.CompressFormat.JPEG, 80, saveImg);
                         saveImg.flush();
                         saveImg.close();
                     }
                     else {
                         File userImg = new File(getActivity().getFilesDir()+ "/imgs/", "userImg.jpeg");
                         if(userImg.exists()) {
-                            curBitmap = BitmapFactory.decodeFile(getActivity().getFilesDir()+ "/imgs/userImg.jpeg");
+                            ((Home)getActivity()).curBitmap = BitmapFactory.decodeFile(getActivity().getFilesDir()+ "/imgs/userImg.jpeg");
                         }
                     }
 
@@ -109,13 +110,16 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
-        if(connectFlag == 1) {
+        boolean isFirstView = ((Home)getActivity()).getSettingFirstView();
+        if(connectFlag == 1 && isFirstView) {
+            Log.d(TAG, "run thread");
+            ((Home)getActivity()).setSettingFirstView(false);
             thread.start();
         }
-        else {
+        else if(isFirstView){
             File userImg = new File(getActivity().getFilesDir()+ "/imgs/", "userImg.jpeg");
             if(userImg.exists()) {
-                curBitmap = BitmapFactory.decodeFile(getActivity().getFilesDir()+ "/imgs/userImg.jpeg");
+                ((Home)getActivity()).curBitmap = BitmapFactory.decodeFile(getActivity().getFilesDir()+ "/imgs/userImg.jpeg");
             }
         }
         try {
@@ -123,8 +127,14 @@ public class SettingsFragment extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        viewBinding.userImg.setImageBitmap(curBitmap);
+        viewBinding.userImg.setImageBitmap(((Home)getActivity()).curBitmap);
         viewBinding.textName.setText(myAccount);
+        if(((Home)getActivity()).isView == 0 || ((Home)getActivity()).isView == 2) {
+            viewBinding.switchView.setChecked(false);
+        }
+        else {
+            viewBinding.switchView.setChecked(true);
+        }
 
         viewBinding.buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +155,9 @@ public class SettingsFragment extends Fragment {
                             try {
                                 Bitmap bitmap = ((BitmapDrawable)viewBinding.userImg.getDrawable()).getBitmap();
                                 userDAO.updateUserImg(myAccount, bitmap);
+                                boolean isView = viewBinding.switchView.isChecked();
+                                ((Home)getActivity()).isView = isView ? 1 : 0;
+                                userDAO.updateUserView(myAccount, isView);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -218,7 +231,7 @@ public class SettingsFragment extends Fragment {
                         Toast.makeText((AppCompatActivity)getActivity(), searchResString, Toast.LENGTH_LONG).show();
                     }
                     else {
-                        Toast.makeText((AppCompatActivity)getActivity(), "不存在该用户", Toast.LENGTH_SHORT).show();
+                        Toast.makeText((AppCompatActivity)getActivity(), "该用户不存在或禁止查看", Toast.LENGTH_SHORT).show();
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -257,6 +270,7 @@ public class SettingsFragment extends Fragment {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 80, saveImg);
                     saveImg.flush();
                     saveImg.close();
+                    ((Home)getActivity()).curBitmap = bitmap;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
