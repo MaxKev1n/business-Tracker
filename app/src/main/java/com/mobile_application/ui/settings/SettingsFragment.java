@@ -2,6 +2,7 @@ package com.mobile_application.ui.settings;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +45,7 @@ import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SettingsFragment extends Fragment {
@@ -53,6 +56,9 @@ public class SettingsFragment extends Fragment {
     final static int FILE_REQUEST_CODE = 10086;
     private static final String TAG = "SettingsFragment";
     private Bitmap curBitmap;
+
+    private String searchResString = null;
+    private boolean searchRes = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -179,6 +185,44 @@ public class SettingsFragment extends Fragment {
                 Config.clear((AppCompatActivity)getActivity());
                 Intent intent = new Intent((AppCompatActivity)getActivity(), MainActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        viewBinding.buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String userAccount = viewBinding.editText3.getText().toString();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        UserDAO userDAO = new UserDAO();
+                        List<String> res = null;
+                        try {
+                            res = userDAO.selectOtherData(userAccount);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        if(res != null) {
+                            searchResString = "该用户累计任务"+ res.get(0) + "项，累计时间" + res.get(1) + "分钟";
+                            searchRes = true;
+                        }
+                        else {
+                            searchRes = false;
+                        }
+                    }
+                });
+                thread.start();
+                try {
+                    thread.join();
+                    if(searchRes) {
+                        Toast.makeText((AppCompatActivity)getActivity(), searchResString, Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText((AppCompatActivity)getActivity(), "不存在该用户", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

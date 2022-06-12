@@ -122,6 +122,7 @@ public class UserDAO {
             res = state.executeQuery(sql);
             if(res.next()) {
                 sql = "select * from " + account + ";";
+                Log.d(TAG, sql);
                 res = state.executeQuery(sql);
                 List<List<String>> listRes = new ArrayList<>();
                 while(res.next()) {
@@ -262,6 +263,53 @@ public class UserDAO {
             if(res.next()) {
                 String name = res.getString("name").toString();
                 return name;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(res != null) {
+                res.close();
+            }
+            if(state != null) {
+                state.close();
+            }
+            if(conn != null) {
+                conn.close();
+            }
+        }
+        return null;
+    }
+
+    public List<String> selectOtherData(String account) throws SQLException {
+        Connection conn = null;
+        Statement state = null;
+        ResultSet res = null;
+        try {
+            conn = JDBCUtils.getConn();
+            if(conn == null) {
+                return null;
+            }
+            state = conn.createStatement();
+            String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = 'app' and TABLE_NAME ='" + account + "';";
+            Log.d(TAG, sql);
+            res = state.executeQuery(sql);
+            if(res.next()) {
+                int totalList = 0;
+                int totalTime = 0;
+                sql = "select * from " + account + ";";
+                res = state.executeQuery(sql);
+                List<String> listRes = new ArrayList<>();
+                while(res.next()) {
+                    totalList += Integer.valueOf(res.getString("listcount"));
+                    totalTime += Integer.valueOf(res.getString("studytime"));
+                }
+                listRes.add(String.valueOf(totalList));
+                listRes.add(String.valueOf(totalTime));
+                return listRes;
+            }
+            else {
+                return null;
             }
 
         } catch (Exception e) {
