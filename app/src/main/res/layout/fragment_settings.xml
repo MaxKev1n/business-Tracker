@@ -110,16 +110,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settingInfo" />
 
-    <ImageView
-        android:id="@+id/userImg"
-        android:layout_width="73dp"
-        android:layout_height="73dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
-        android:src="@mipmap/ic_default_img_round"
-        app:layout_constraintStart_toStartOf="@+id/userInfo"
-        app:layout_constraintTop_toTopOf="@+id/userInfo" />
-
     <TextView
         android:id="@+id/textName"
         android:layout_width="230dp"
@@ -127,8 +117,8 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:textSize="30dp"
         android:textColor="@color/black"
+        android:textSize="30dp"
         app:layout_constraintStart_toEndOf="@+id/userImg"
         app:layout_constraintTop_toTopOf="@+id/userInfo" />
 
@@ -140,5 +130,16 @@
         android:text="更换"
         app:layout_constraintEnd_toEndOf="@+id/textName"
         app:layout_constraintTop_toBottomOf="@+id/textName" />
+
+    <ImageView
+        android:id="@+id/userImg"
+        android:layout_width="73dp"
+        android:layout_height="73dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="center"
+        android:src="@mipmap/ic_default_img_foreground"
+        app:layout_constraintStart_toStartOf="@+id/userInfo"
+        app:layout_constraintTop_toTopOf="@+id/userInfo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
