@@ -1,8 +1,13 @@
 package com.mobile_application.utils;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.mobile_application.Config;
 import com.mobile_application.utils.LocalDb;
 
 import com.mobile_application.utils.JDBCUtils;
@@ -166,6 +171,41 @@ public class UserDAO {
             }
         }
         return 0;
+    }
+
+    public String selectUserImg(String account) throws Exception {
+        Connection conn = null;
+        Statement state = null;
+        ResultSet res = null;
+        try {
+            conn = JDBCUtils.getConn();
+            if(conn == null) {
+                return null;
+            }
+            state = conn.createStatement();
+            String sql = "select * from user where account = '" + account + "';";
+            res = state.executeQuery(sql);
+            if(res.next()) {
+                return res.getString("image");
+            }
+            else {
+                return null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(res != null) {
+                res.close();
+            }
+            if(state != null) {
+                state.close();
+            }
+            if(conn != null) {
+                conn.close();
+            }
+        }
+        return null;
     }
 
     //SQLite
