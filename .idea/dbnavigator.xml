@@ -29,7 +29,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="b9ee4f5b-2214-4abd-b65d-04f63da4de0b">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from test1;]]></console>
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from czh0316;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -39,7 +39,9 @@
     <connection id="b9ee4f5b-2214-4abd-b65d-04f63da4de0b" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="b9ee4f5b-2214-4abd-b65d-04f63da4de0b" dataset="main.czh0316" active-filter-id="" />
     <filter-actions connection-id="b9ee4f5b-2214-4abd-b65d-04f63da4de0b" dataset="main.test1" active-filter-id="" />
+    <filter-actions connection-id="b9ee4f5b-2214-4abd-b65d-04f63da4de0b" dataset="main.android_metadata" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />

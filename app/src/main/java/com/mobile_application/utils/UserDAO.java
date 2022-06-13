@@ -130,14 +130,14 @@ public class UserDAO {
                 while(res.next()) {
                     List<String> temp = new ArrayList<>();
                     temp.add(res.getString("curdate"));
-                    temp.add(res.getString("listcount"));
                     temp.add(res.getString("studytime"));
+                    temp.add(res.getString("time"));
                     listRes.add(temp);
                 }
                 return listRes;
             }
             else {
-                sql = "CREATE TABLE `app`.`" + account + "` (`curdate` VARCHAR(45) NOT NULL,`listcount` INT NULL,`studytime` INT NULL, PRIMARY KEY (`curdate`));";
+                sql = "CREATE TABLE `app`.`" + account + "` (`curdate` VARCHAR(45) NOT NULL,`studytime` INT NULL, `time` VARCHAR(45) NOT NULL,PRIMARY KEY (`time`));";
                 state.executeUpdate(sql);
             }
 
@@ -157,7 +157,7 @@ public class UserDAO {
         return null;
     }
 
-    public int updateUser(String account, String date, String listCount, String studyTime) throws Exception {
+    public int updateUser(String account, String time, String studyTime) throws Exception {
         Connection conn = null;
         Statement state = null;
         ResultSet res = null;
@@ -167,7 +167,7 @@ public class UserDAO {
                 return 0;
             }
             state = conn.createStatement();
-            String sql = "UPDATE `app`.`"+ account +"` SET `listcount` = '" + listCount +"',`studytime` = '"+ studyTime + "' WHERE (`curdate` = '"+ date + "')";
+            String sql = "UPDATE `app`.`"+ account +"` SET `studytime` = '"+ studyTime + "' WHERE (`time` = '"+ time + "')";
             res = state.executeQuery(sql);
 
         } catch (Exception e) {
@@ -424,11 +424,11 @@ public class UserDAO {
     }
 
     //SQLite
-    public void insertUserSign(SQLiteDatabase db, String myAccount, String curDate, int listCount, int studyTime) {
+    public void insertUserSign(SQLiteDatabase db, String myAccount, String curDate, int studyTime, String time) {
         ContentValues values = new ContentValues();
         values.put("curdate", curDate);
-        values.put("listcount", listCount);
         values.put("studytime", studyTime);
+        values.put("time", time);
         db.insert(myAccount, null, values);
     }
 
@@ -441,7 +441,7 @@ public class UserDAO {
                     Log.d(TAG, "exist table");
                 }
                 else {
-                    String createTable = "create table '" + myAccount + "' (curdate text primary key, listcount integer, studytime integer);";
+                    String createTable = "create table '" + myAccount + "' (curdate text primary key, studytime integer, time text);";
                     db.execSQL(createTable);
                 }
             }
@@ -452,12 +452,15 @@ public class UserDAO {
         try {
             Cursor cursor = db.rawQuery(selectSql, null);
             List<String> res = new ArrayList<>();
-            if(cursor.moveToNext()) {
-                int listCountIndex = cursor.getColumnIndex("listcount");
+            int listCount = 0;
+            int studyTime = 0;
+            while(cursor.moveToNext()) {
                 int studyTimeIndex = cursor.getColumnIndex("studytime");
-                res.add(cursor.getString(listCountIndex));
-                res.add(cursor.getString(studyTimeIndex));
+                studyTime += Integer.valueOf(cursor.getString(studyTimeIndex));
+                listCount++;
             }
+            res.add(String.valueOf(listCount));
+            res.add(String.valueOf(studyTime));
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -470,10 +473,9 @@ public class UserDAO {
         Cursor cursor = db.rawQuery(selectSql, null);
         int totalList = 0;
         int totalTime = 0;
-        int listCountIndex = cursor.getColumnIndex("listcount");
         int studyTimeIndex = cursor.getColumnIndex("studytime");
         while(cursor.moveToNext()) {
-            totalList += Integer.valueOf(cursor.getString(listCountIndex));
+            totalList ++;
             totalTime += Integer.valueOf(cursor.getString(studyTimeIndex));
         }
         List<Integer> res = new ArrayList<>();
@@ -482,24 +484,21 @@ public class UserDAO {
         return res;
     }
 
-    public void updateUserData(SQLiteDatabase db, String account, String date, String listCount, String studyTime) throws Exception {
+    public void updateUserData(SQLiteDatabase db, String account, String date, String studyTime, String time) throws Exception {
         String selectSql = "select * from " + "'" + account + "'" + " where curdate = " + "'" + date + "';";
         Cursor cursor = db.rawQuery(selectSql, null);
         List<String> res = new ArrayList<>();
         if(cursor.moveToNext()) {
-            int listCountIndex = cursor.getColumnIndex("listcount");
             int studyTimeIndex = cursor.getColumnIndex("studytime");
-            int localListCount = Integer.valueOf(cursor.getString(listCountIndex).toString());
             int localStudyTime = Integer.valueOf(cursor.getString(studyTimeIndex).toString());
-            int updateListCount = localListCount > Integer.valueOf(listCount) ? localListCount : Integer.valueOf(listCount);
             int updateStudyTime = localStudyTime > Integer.valueOf(studyTime) ? localStudyTime : Integer.valueOf(studyTime);
-            if(updateListCount > localListCount || updateStudyTime > localListCount) {
-                String updateSql = "replace into " + account + "(curdate, listcount, studytime) values ('" + date + "', '" + updateListCount + "', '" + updateStudyTime + "');";
+            if(updateStudyTime > localStudyTime) {
+                String updateSql = "replace into " + account + "(curdate, studytime) values ('" + date + "', '" + updateStudyTime + "');";
                 db.execSQL(updateSql);
             }
         }
         else {
-            insertUserSign(db, account, date, Integer.valueOf(listCount), Integer.valueOf(studyTime));
+            insertUserSign(db, account, date, Integer.valueOf(studyTime), time);
         }
     }
 
@@ -510,9 +509,9 @@ public class UserDAO {
             for(int i = 0;i < listRes.size();i++){
                 List<String> temp = listRes.get(i);
                 String date = temp.get(0).toString();
-                String listCount = temp.get(1).toString();
                 String studyTime = temp.get(2).toString();
-                updateUserData(db, account, date, listCount, studyTime);
+                String time = temp.get(3).toString();
+                updateUserData(db, account, date, studyTime, time);
             }
         }
     }

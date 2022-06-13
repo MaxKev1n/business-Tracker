@@ -85,7 +85,8 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
 
-        //userDAO.insertUserSign(sqliteDatabase, myAccount, curDate, 5, 10);
+        //String insertTime = String.valueOf(time.year) + "-" + String.valueOf(time.month + 1) + "-" + String.valueOf(time.monthDay) + " " + String.valueOf(time.hour) + ":" + String.valueOf(time.minute) + ":" + String.valueOf(time.second);
+        //userDAO.insertUserSign(sqliteDatabase, myAccount, curDate, 5, insertTime);
 
         viewBinding.calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
