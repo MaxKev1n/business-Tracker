@@ -239,6 +239,11 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        //here
+
+
+
+
         final TextView textView = viewBinding.textSettings;
         settingsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
