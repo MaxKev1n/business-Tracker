@@ -157,18 +157,25 @@ public class UserDAO {
     public int updateRemoteData(String account, String curDate, String studyTime, String time) throws Exception {
         Connection conn = null;
         Statement state = null;
+        ResultSet res = null;
         try {
             conn = JDBCUtils.getConn();
             if(conn == null) {
                 return 0;
             }
             state = conn.createStatement();
-            String sql = "insert into `" + account + "` (curdate, studytime, time) values('" + curDate + "','" + studyTime + "','" + time + "');";
-            state.executeUpdate(sql);
-
+            String selectSql = "select * from " + account + " where curdate = '" + curDate + "';";
+            res = state.executeQuery(selectSql);
+            if(!res.next()) {
+                String sql = "insert into `" + account + "` (curdate, studytime, time) values('" + curDate + "','" + studyTime + "','" + time + "');";
+                state.executeUpdate(sql);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            if(res != null) {
+                res.close();
+            }
             if(state != null) {
                 state.close();
             }
