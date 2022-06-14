@@ -4,4 +4,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="timer1_text">普通计时</string>
+    <string name="timer2_text">普通三天两检</string>
+    <string name="timer3_text">特殊三天两检</string>
 </resources>

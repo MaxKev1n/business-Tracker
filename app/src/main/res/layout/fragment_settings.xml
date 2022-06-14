@@ -302,6 +302,7 @@
                 android:layout_marginTop="12dp"
                 android:background="@drawable/shape_view"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.491"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settingInfo" />
 
@@ -324,6 +325,46 @@
                 app:layout_constraintHorizontal_bias="0.352"
                 app:layout_constraintStart_toEndOf="@+id/buttonLogOut"
                 app:layout_constraintTop_toBottomOf="@+id/viewNotice" />
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="99dp"
+                android:layout_height="49dp"
+                android:text="@string/timer1_text"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintEnd_toStartOf="@+id/checkBox2"
+                app:layout_constraintStart_toStartOf="@+id/viewNotice"
+                app:layout_constraintTop_toTopOf="@+id/viewNotice"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <CheckBox
+                android:id="@+id/checkBox2"
+                android:layout_width="94dp"
+                android:layout_height="48dp"
+                android:text="@string/timer2_text"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintEnd_toEndOf="@+id/viewNotice"
+                app:layout_constraintStart_toStartOf="@+id/viewNotice"
+                app:layout_constraintTop_toBottomOf="@+id/settingInfo"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <CheckBox
+                android:id="@+id/checkBox3"
+                android:layout_width="95dp"
+                android:layout_height="48dp"
+                android:text="@string/timer3_text"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintEnd_toEndOf="@+id/viewNotice"
+                app:layout_constraintStart_toEndOf="@+id/checkBox2"
+                app:layout_constraintTop_toTopOf="@+id/viewNotice"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="474dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
