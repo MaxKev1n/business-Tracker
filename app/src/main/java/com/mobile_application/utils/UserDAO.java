@@ -83,7 +83,6 @@ public class UserDAO {
             }
             else {
                 sql = "insert into `user` (account, name, password) values('" + account + "','" + name + "','" + password + "');";
-                Log.d(TAG, sql);
                 int r = state.executeUpdate(sql);
                 if(r != 0){
                     return 1; //insert success
@@ -120,11 +119,9 @@ public class UserDAO {
             }
             state = conn.createStatement();
             String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = 'app' and TABLE_NAME ='" + account + "';";
-            Log.d(TAG, sql);
             res = state.executeQuery(sql);
             if(res.next()) {
                 sql = "select * from " + account + ";";
-                Log.d(TAG, sql);
                 res = state.executeQuery(sql);
                 List<List<String>> listRes = new ArrayList<>();
                 while(res.next()) {
@@ -157,25 +154,21 @@ public class UserDAO {
         return null;
     }
 
-    public int updateUser(String account, String time, String studyTime) throws Exception {
+    public int updateRemoteData(String account, String curDate, String studyTime, String time) throws Exception {
         Connection conn = null;
         Statement state = null;
-        ResultSet res = null;
         try {
             conn = JDBCUtils.getConn();
             if(conn == null) {
                 return 0;
             }
             state = conn.createStatement();
-            String sql = "UPDATE `app`.`"+ account +"` SET `studytime` = '"+ studyTime + "' WHERE (`time` = '"+ time + "')";
-            res = state.executeQuery(sql);
+            String sql = "insert into `" + account + "` (curdate, studytime, time) values('" + curDate + "','" + studyTime + "','" + time + "');";
+            state.executeUpdate(sql);
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(res != null) {
-                res.close();
-            }
             if(state != null) {
                 state.close();
             }
@@ -387,7 +380,6 @@ public class UserDAO {
                 return null;
             }
             String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = 'app' and TABLE_NAME ='" + account + "';";
-            Log.d(TAG, sql);
             res = state.executeQuery(sql);
             if(res.next()) {
                 int totalList = 0;
@@ -425,11 +417,29 @@ public class UserDAO {
 
     //SQLite
     public void insertUserSign(SQLiteDatabase db, String myAccount, String curDate, int studyTime, String time) {
-        ContentValues values = new ContentValues();
-        values.put("curdate", curDate);
-        values.put("studytime", studyTime);
-        values.put("time", time);
-        db.insert(myAccount, null, values);
+        String selectTable = "select count(*) from sqlite_master where type='table' and name='" + myAccount + "'";
+        try {
+            Cursor cursor = db.rawQuery(selectTable, null);
+            if(cursor.moveToNext()) {
+                if(cursor.getInt(0) > 0) {
+                    String selectSql = "select * from " + "'" + myAccount + "'" + " where time = " + "'" + time + "';";
+                    cursor = db.rawQuery(selectSql, null);
+                    if(!cursor.moveToNext()) {
+                        ContentValues values = new ContentValues();
+                        values.put("curdate", curDate);
+                        values.put("studytime", studyTime);
+                        values.put("time", time);
+                        db.insert(myAccount, null, values);
+                    }
+                }
+                else {
+                    String createTable = "create table '" + myAccount + "' (curdate text primary key, studytime integer, time text);";
+                    db.execSQL(createTable);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<String> selectUserSign(SQLiteDatabase db, String myAccount, String curDate) {
@@ -502,6 +512,40 @@ public class UserDAO {
         }
     }
 
+    public List<List<String>> selectLocalData(SQLiteDatabase db, String account) throws SQLException {
+        try {
+            String sql = "select count(*) from sqlite_master where type='table' and name='" + account + "'";
+            Cursor cursor = db.rawQuery(sql, null);
+            if(cursor.moveToNext()) {
+                if(cursor.getInt(0) > 0) {
+                    sql = "select * from '" + account + "';";
+                    cursor = db.rawQuery(sql, null);
+                    List<List<String>> listRes = new ArrayList<>();
+                    int curDateIndex = cursor.getColumnIndex("curdate");
+                    int studyTimeIndex = cursor.getColumnIndex("studytime");
+                    int timeIndex = cursor.getColumnIndex("time");
+                    while(cursor.moveToNext()) {
+                        List<String> temp = new ArrayList<>();
+                        temp.add(cursor.getString(curDateIndex));
+                        temp.add(cursor.getString(studyTimeIndex));
+                        temp.add(cursor.getString(timeIndex));
+                        listRes.add(temp);
+                    }
+                    return listRes;
+                }
+                else {
+                    String createTable = "create table '" + account + "' (curdate text primary key, studytime integer, time text);";
+                    db.execSQL(createTable);
+                    return null;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     //both
     public void synchronizeRecord(String account, SQLiteDatabase db) throws Exception {
         List<List<String>> listRes = selectRemoteData(account);
@@ -509,9 +553,20 @@ public class UserDAO {
             for(int i = 0;i < listRes.size();i++){
                 List<String> temp = listRes.get(i);
                 String date = temp.get(0).toString();
-                String studyTime = temp.get(2).toString();
-                String time = temp.get(3).toString();
-                updateUserData(db, account, date, studyTime, time);
+                String studyTime = temp.get(1).toString();
+                String time = temp.get(2).toString();
+                insertUserSign(db, account, date, Integer.valueOf(studyTime), time);
+            }
+        }
+
+        List<List<String>> localListRes = selectLocalData(db, account);
+        if(localListRes != null) {
+            for(int i = 0;i < localListRes.size();i++){
+                List<String> temp = localListRes.get(i);
+                String date = temp.get(0).toString();
+                String studyTime = temp.get(1).toString();
+                String time = temp.get(2).toString();
+                updateRemoteData(account, date, studyTime, time);
             }
         }
     }
