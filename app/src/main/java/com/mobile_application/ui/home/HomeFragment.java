@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.mobile_application.Config;
 import com.mobile_application.MainActivity;
@@ -84,6 +85,37 @@ public class HomeFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        viewBinding.freshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            UserDAO userDAO = new UserDAO();
+                            userDAO.synchronizeRecord(myAccount, sqliteDatabase);
+                            java.util.Date date = new Date();
+                            userDAO.updateUserDate(myAccount, date);
+                            totalDataDisplay(userDAO, sqliteDatabase);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                if(connectFlag == 1) {
+                    thread.start();
+                    try {
+                        thread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                viewBinding.freshlayout.setRefreshing(false);
+            }
+        });
 
         //String insertTime = String.valueOf(time.year) + "-" + String.valueOf(time.month + 1) + "-" + String.valueOf(time.monthDay) + " " + String.valueOf(time.hour) + ":" + String.valueOf(time.minute) + ":" + String.valueOf(time.second);
         //userDAO.insertUserSign(sqliteDatabase, myAccount, curDate, 5, insertTime);
