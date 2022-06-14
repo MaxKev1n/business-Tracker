@@ -1,6 +1,7 @@
 package com.mobile_application;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -13,9 +14,15 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.mobile_application.databinding.ActivityHomeBinding;
 
-public class Home extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Map;
 
+public class Home extends AppCompatActivity {
     private ActivityHomeBinding viewBinding;
+    private boolean settingFirstView = true;
+
+    public Bitmap curBitmap;
+    public int isView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +41,14 @@ public class Home extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(viewBinding.navView, navController);
 
+    }
+
+    public boolean getSettingFirstView() {
+        return settingFirstView;
+    }
+
+    public void setSettingFirstView(boolean isView) {
+        settingFirstView = isView;
     }
 
 }
