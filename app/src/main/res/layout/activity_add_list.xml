@@ -4,42 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f4f4f4"
     tools:context=".AddList">
+
+    <View
+        android:id="@+id/viewTime"
+        android:layout_width="369dp"
+        android:layout_height="560dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/shape_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonAddItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:text="Button"
+        android:layout_marginTop="72dp"
+        android:text="提交"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTime" />
-
-    <EditText
-        android:id="@+id/textContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="192dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textContent" />
 
     <EditText
         android:id="@+id/textTime"
-        android:layout_width="wrap_content"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="120dp"
         android:ems="10"
+        android:hint="任务时间：分钟"
         android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textContent" />
+        app:layout_constraintEnd_toEndOf="@+id/viewTime"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="@+id/viewTime"
+        app:layout_constraintTop_toTopOf="@+id/viewTime" />
+
+    <EditText
+        android:id="@+id/textContent"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:enabled="true"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:hint="任务简介："
+        android:maxLines="10"
+        android:minLines="8"
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="@+id/viewTime"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="@+id/viewTime"
+        app:layout_constraintTop_toBottomOf="@+id/textTime" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

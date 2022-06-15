@@ -565,7 +565,7 @@ public class UserDAO {
                     db.insert(account + "_list", null, values);
                 }
                 else {
-                    String createTable = "create table '" + account + "_list" + "' (content text, time text);";
+                    String createTable = "create table '" + account + "_list" + "' (content text primary key, time text);";
                     db.execSQL(createTable);
                 }
             }
@@ -594,7 +594,7 @@ public class UserDAO {
                     return listRes;
                 }
                 else {
-                    String createTable = "create table '" + account + "_list" + "' (content text, time text);";
+                    String createTable = "create table '" + account + "_list" + "' (content text primary key, time text);";
                     db.execSQL(createTable);
                     return null;
                 }
@@ -604,6 +604,25 @@ public class UserDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void updateListItem(SQLiteDatabase db, String account, String content) {
+        String selectTable = "select count(*) from sqlite_master where type='table' and name='" + account + "_list" + "'";
+        try {
+            Cursor cursor = db.rawQuery(selectTable, null);
+            if(cursor.moveToNext()) {
+                if(cursor.getInt(0) > 0) {
+                    db.delete(account + "_list", "content = ?", new String[] {content});
+                    //update user table
+                }
+                else {
+                    String createTable = "create table '" + account + "_list" + "' (content text primary key, time text);";
+                    db.execSQL(createTable);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //both
