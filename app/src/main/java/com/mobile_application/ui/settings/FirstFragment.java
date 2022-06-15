@@ -1,4 +1,4 @@
-package com.mobile_application.ui.NucleicAcid;
+package com.mobile_application.ui.settings;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -16,40 +16,33 @@ import android.view.ViewGroup;
 
 import com.mobile_application.R;
 
-public class NucleicAcidFragment extends Fragment {
+public class FirstFragment extends Fragment {
 
-    private NucleicAcidViewModel mViewModel;
+    private FirstViewModel mViewModel;
 
-    public static NucleicAcidFragment newInstance() {
-        return new NucleicAcidFragment();
+    public static FirstFragment newInstance() {
+        return new FirstFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_nucleic_acid, container, false);
+        return inflater.inflate(R.layout.fragment_first, container, false);
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(NucleicAcidViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(FirstViewModel.class);
         // TODO: Use the ViewModel
-        getView().findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
+        getView().findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavController controller = Navigation.findNavController(view);
-                controller.navigate(R.id.action_nucleicAcidFragment_to_firstFragment);
+                controller.navigate(R.id.action_firstFragment_to_nucleicAcidFragment);
             }
         });
-        getView().findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavController controller = Navigation.findNavController(view);
-                controller.navigate(R.id.action_nucleicAcidFragment_to_navigation_home);
-            }
-        });
+
     }
 
 }

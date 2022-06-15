@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.NucleicAcid.FirstFragment">
+    tools:context=".ui.settings.FirstFragment">
     android:id="@+id/countdown_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -91,7 +91,11 @@
         android:layout_height="wrap_content"
         android:text="back"
         app:backgroundTint="@color/teal_200"
-        tools:layout_editor_absoluteX="154dp"
-        tools:layout_editor_absoluteY="506dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.736" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

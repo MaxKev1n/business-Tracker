@@ -1,4 +1,4 @@
-package com.mobile_application.ui.NucleicAcid;
+package com.mobile_application.ui.settings;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -16,33 +16,40 @@ import android.view.ViewGroup;
 
 import com.mobile_application.R;
 
-public class FirstFragment extends Fragment {
+public class NucleicAcidFragment extends Fragment {
 
-    private FirstViewModel mViewModel;
+    private NucleicAcidViewModel mViewModel;
 
-    public static FirstFragment newInstance() {
-        return new FirstFragment();
+    public static NucleicAcidFragment newInstance() {
+        return new NucleicAcidFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_first, container, false);
+        return inflater.inflate(R.layout.fragment_nucleic_acid, container, false);
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(FirstViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(NucleicAcidViewModel.class);
         // TODO: Use the ViewModel
-        getView().findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+        getView().findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavController controller = Navigation.findNavController(view);
-                controller.navigate(R.id.action_firstFragment_to_nucleicAcidFragment);
+                controller.navigate(R.id.action_nucleicAcidFragment_to_firstFragment);
             }
         });
-
+        getView().findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavController controller = Navigation.findNavController(view);
+                controller.navigate(R.id.action_nucleicAcidFragment_to_navigation_home);
+            }
+        });
     }
 
 }
