@@ -15,7 +15,6 @@ import java.util.TimerTask;
 public class NucleicActivity extends Activity {
     private RelativeLayout countDown;
     private TextView hoursTv, minutesTv, secondsTv;
-    private long mDay = 10;
     private long mHour = 10;
     private long mMin = 30;
     private long mSecond = 00;// 天 ,小时,分钟,秒
@@ -48,14 +47,6 @@ public class NucleicActivity extends Activity {
                 if (mHour < 0) {
                     // 倒计时结束
                     mHour = 23;
-                    mDay--;
-                    if(mDay < 0){
-                        // 倒计时结束
-                        mDay = 0;
-                        mHour= 0;
-                        mMin = 0;
-                        mSecond = 0;
-                    }
                 }
             }
         }
