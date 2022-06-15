@@ -7,128 +7,145 @@
     android:background="#f4f4f4"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="111dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="16dp"
-        android:text="我的数据"
-        android:textSize="55px"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/viewData"
-        android:layout_width="354dp"
-        android:layout_height="93dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:background="@drawable/shape_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="355dp"
-        android:layout_height="309dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/shape_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.482"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewData" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="353dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/shape_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
-
-    <TextView
-        android:id="@+id/textSign"
-        android:layout_width="327dp"
-        android:layout_height="47dp"
-        android:layout_marginBottom="12dp"
-        android:text=""
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view" />
-
-    <TextView
-        android:id="@+id/totalList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="累计任务"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/viewData" />
-
-    <TextView
-        android:id="@+id/totalTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="64dp"
-        android:text="累计时长"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/viewData"
-        app:layout_constraintTop_toTopOf="@+id/viewData" />
-
-    <TextView
-        android:id="@+id/totalListNum"
-        android:layout_width="85dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/totalList" />
-
-    <TextView
-        android:id="@+id/totalTimeNum"
-        android:layout_width="85dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/totalTime"
-        app:layout_constraintTop_toBottomOf="@+id/totalTime" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        app:layout_constraintStart_toStartOf="@+id/viewData"
-        app:layout_constraintTop_toTopOf="@+id/totalList"
-        app:srcCompat="@drawable/ic_chart_bar" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/totalTime"
-        app:layout_constraintTop_toTopOf="@+id/totalTime"
-        app:srcCompat="@drawable/ic_time" />
-
-    <TextView
-        android:id="@+id/text_home"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:id="@+id/freshlayout">
+        <ScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f4f4f4">
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="111dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="16dp"
+                    android:text="我的数据"
+                    android:textSize="55px"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/viewData"
+                    android:layout_width="354dp"
+                    android:layout_height="93dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:background="@drawable/shape_view"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                <CalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="355dp"
+                    android:layout_height="309dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/shape_view"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.482"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewData" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="353dp"
+                    android:layout_height="74dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/shape_view"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+                <TextView
+                    android:id="@+id/textSign"
+                    android:layout_width="327dp"
+                    android:layout_height="47dp"
+                    android:layout_marginBottom="12dp"
+                    android:text=""
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/view"
+                    app:layout_constraintEnd_toEndOf="@+id/view"
+                    app:layout_constraintStart_toStartOf="@+id/view" />
+
+                <TextView
+                    android:id="@+id/totalList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="累计任务"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="@+id/viewData" />
+
+                <TextView
+                    android:id="@+id/totalTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="64dp"
+                    android:text="累计时长"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="@+id/viewData"
+                    app:layout_constraintTop_toTopOf="@+id/viewData" />
+
+                <TextView
+                    android:id="@+id/totalListNum"
+                    android:layout_width="85dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintStart_toStartOf="@+id/imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/totalList" />
+
+                <TextView
+                    android:id="@+id/totalTimeNum"
+                    android:layout_width="85dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintEnd_toEndOf="@+id/totalTime"
+                    app:layout_constraintTop_toBottomOf="@+id/totalTime" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    app:layout_constraintStart_toStartOf="@+id/viewData"
+                    app:layout_constraintTop_toTopOf="@+id/totalList"
+                    app:srcCompat="@drawable/ic_chart_bar" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/totalTime"
+                    app:layout_constraintTop_toTopOf="@+id/totalTime"
+                    app:srcCompat="@drawable/ic_time" />
+
+                <TextView
+                    android:id="@+id/text_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textAlignment="center"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

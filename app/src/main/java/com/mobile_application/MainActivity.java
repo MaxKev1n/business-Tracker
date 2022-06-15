@@ -10,16 +10,29 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.mobile_application.databinding.ActivityMainBinding;
 import com.mobile_application.utils.*;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding viewBinding;
     private SharedPreferences preferences;
     private SharedPreferences .Editor editor;
+    private static final String TAG = "MainActivity";
+
+    public void synchronizeRecord(String account, UserDAO userDAO) throws Exception {
+        LocalDb localDb = new LocalDb(this, "app.db", null, 1, viewBinding.editTextAccount.getText().toString());
+        SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
+        userDAO.synchronizeRecord(account, sqliteDatabase);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
             viewBinding.rememberPassword.setChecked(true);
         }
 
-        System.out.println(isAutoLogin);
         if(isAutoLogin && isRemember) {
             viewBinding.autoLogin.setChecked(true);
             viewBinding.rememberPassword.setChecked(true);
@@ -79,6 +91,9 @@ public class MainActivity extends AppCompatActivity {
                         int res = 0;
                         try {
                             res = userDao.select(viewBinding.editTextAccount.getText().toString(), viewBinding.editTextPassword.getText().toString());
+                            if(res == 1) {
+                                synchronizeRecord(viewBinding.editTextAccount.getText().toString(), userDao);
+                            }
                             hand.sendEmptyMessage(res);
                         } catch (Exception e) {
                             e.printStackTrace();
