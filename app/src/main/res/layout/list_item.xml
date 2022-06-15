@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/checkBox5"
+        android:id="@+id/checkDone"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginEnd="20dp"

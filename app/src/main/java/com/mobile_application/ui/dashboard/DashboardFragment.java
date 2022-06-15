@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile_application.AddList;
 import com.mobile_application.Home;
@@ -104,9 +106,10 @@ public class DashboardFragment extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View view=View.inflate((AppCompatActivity)getActivity(),R.layout.list_item,null);
-            TextView mTextView=(TextView) view.findViewById(R.id.itemName);
+            View view = View.inflate((AppCompatActivity)getActivity(),R.layout.list_item,null);
+            TextView mTextView = (TextView) view.findViewById(R.id.itemName);
             mTextView.setText(items.get(position).toString());
+            CheckBox mCheckBox = (CheckBox) view.findViewById(R.id.checkDone);
             return view;
         }
     }
