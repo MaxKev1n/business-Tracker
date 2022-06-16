@@ -12,7 +12,7 @@
         android:id="@+id/itemName"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:background="@color/tudobg_color"
+        android:background="@color/white"
         android:gravity="center"
         android:text="TextView"
         android:textSize="20dp"
@@ -26,7 +26,7 @@
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/tudobg_color"
+        android:background="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/itemName"
         app:layout_constraintTop_toTopOf="@+id/itemName" />
 </androidx.constraintlayout.widget.ConstraintLayout>
