@@ -8,29 +8,12 @@
     tools:context=".ui.dashboard.DashboardFragment"
     tools:viewBindingIgnore="true">
 
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/tudobg_color"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.815" />
-
     <View
         android:id="@+id/viewList"
-        android:layout_width="403dp"
-        android:layout_height="983dp"
+        android:layout_width="354dp"
+        android:layout_height="500dp"
         android:layout_marginTop="88dp"
-        android:background="#f4f4f4"
+        android:background="@drawable/shape_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
