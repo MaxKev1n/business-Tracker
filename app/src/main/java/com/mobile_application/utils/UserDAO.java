@@ -553,6 +553,78 @@ public class UserDAO {
         return null;
     }
 
+    public void insertListItem(SQLiteDatabase db, String account, String time, String content) throws  SQLException{
+        String selectTable = "select count(*) from sqlite_master where type='table' and name='" + account + "_list" + "'";
+        try {
+            Cursor cursor = db.rawQuery(selectTable, null);
+            if(cursor.moveToNext()) {
+                if(cursor.getInt(0) > 0) {
+                    ContentValues values = new ContentValues();
+                    values.put("content", content);
+                    values.put("time", time);
+                    db.insert(account + "_list", null, values);
+                }
+                else {
+                    String createTable = "create table '" + account + "_list" + "' (content text primary key, time text);";
+                    db.execSQL(createTable);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<List<String>> selectListItem(SQLiteDatabase db, String account) throws SQLException {
+        try {
+            String sql = "select count(*) from sqlite_master where type='table' and name='" + account + "_list" + "'";
+            Cursor cursor = db.rawQuery(sql, null);
+            if(cursor.moveToNext()) {
+                if(cursor.getInt(0) > 0) {
+                    sql = "select * from '" + account + "_list" + "';";
+                    cursor = db.rawQuery(sql, null);
+                    List<List<String>> listRes = new ArrayList<>();
+                    int contentIndex = cursor.getColumnIndex("content");
+                    int timeIndex = cursor.getColumnIndex("time");
+                    while(cursor.moveToNext()) {
+                        List<String> temp = new ArrayList<>();
+                        temp.add(cursor.getString(contentIndex));
+                        temp.add(cursor.getString(timeIndex));
+                        listRes.add(temp);
+                    }
+                    return listRes;
+                }
+                else {
+                    String createTable = "create table '" + account + "_list" + "' (content text primary key, time text);";
+                    db.execSQL(createTable);
+                    return null;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void updateListItem(SQLiteDatabase db, String account, String content) {
+        String selectTable = "select count(*) from sqlite_master where type='table' and name='" + account + "_list" + "'";
+        try {
+            Cursor cursor = db.rawQuery(selectTable, null);
+            if(cursor.moveToNext()) {
+                if(cursor.getInt(0) > 0) {
+                    db.delete(account + "_list", "content = ?", new String[] {content});
+                    //update user table
+                }
+                else {
+                    String createTable = "create table '" + account + "_list" + "' (content text primary key, time text);";
+                    db.execSQL(createTable);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     //both
     public void synchronizeRecord(String account, SQLiteDatabase db) throws Exception {
         List<List<String>> listRes = selectRemoteData(account);
