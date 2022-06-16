@@ -12,9 +12,10 @@
         android:id="@+id/itemName"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:text="TextView"
-        android:gravity="center"
         android:background="@color/white"
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +26,7 @@
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginEnd="20dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/itemName"
         app:layout_constraintTop_toTopOf="@+id/itemName" />
 </androidx.constraintlayout.widget.ConstraintLayout>
