@@ -27,8 +27,8 @@
 
     <View
         android:id="@+id/viewList"
-        android:layout_width="354dp"
-        android:layout_height="1000dp"
+        android:layout_width="403dp"
+        android:layout_height="983dp"
         android:layout_marginTop="88dp"
         android:background="@color/tudobg_color"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,5 +60,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="212dp"
+        android:layout_height="70dp"
+        android:text="待办事项"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textColor="@color/button_color"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/viewList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
