@@ -1,14 +1,17 @@
 package com.mobile_application.ui.dashboard;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +41,8 @@ public class DashboardFragment extends Fragment {
     private  List<String> items = new ArrayList<>();
     private String myAccount;
     private int connectFlag;
+    private ListAdapter adapter;
+    private View view;
 
     public static DashboardFragment newInstance() {
         return new DashboardFragment();
@@ -47,7 +52,7 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         Intent intent = ((AppCompatActivity) getActivity()).getIntent();
         connectFlag = Integer.valueOf(intent.getStringExtra("connectFlag")).intValue();
@@ -71,8 +76,9 @@ public class DashboardFragment extends Fragment {
             }
         }
 
+        adapter = new ListAdapter((AppCompatActivity)getActivity(), items);
         mlistView = (ListView) view.findViewById(R.id.toDoList);
-        mlistView.setAdapter(new ListAdapter());
+        mlistView.setAdapter(adapter);
 
         mButtonAddList = (Button) view.findViewById(R.id.buttonAddList);
         mButtonAddList.setOnClickListener(new View.OnClickListener() {
@@ -88,15 +94,24 @@ public class DashboardFragment extends Fragment {
     }
 
     class ListAdapter extends BaseAdapter {
+        Context mcontext;
+        List<String> arrayList;
+        LayoutInflater inflater;
+
+        public ListAdapter(Context context, List<String> list) {
+            this.mcontext = context;
+            this.arrayList = list;
+            inflater = LayoutInflater.from(mcontext);
+        }
 
         @Override
         public int getCount() {
-            return items.size();
+            return arrayList.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return items.get(position).toString();
+            return arrayList.get(position).toString();
         }
 
         @Override
@@ -106,11 +121,49 @@ public class DashboardFragment extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View view = View.inflate((AppCompatActivity)getActivity(),R.layout.list_item,null);
-            TextView mTextView = (TextView) view.findViewById(R.id.itemName);
-            mTextView.setText(items.get(position).toString());
-            CheckBox mCheckBox = (CheckBox) view.findViewById(R.id.checkDone);
-            return view;
+            ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = inflater.inflate(R.layout.list_item, null);
+                holder.mTextView = (TextView) convertView.findViewById(R.id.itemName);
+                holder.mTextView.setText(arrayList.get(position).toString());
+                holder.mCheckBox = (CheckBox) convertView.findViewById(R.id.checkDone);
+                holder.mCheckBox.setTag(position);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    String content = getItem(position).toString();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                UserDAO userDao = new UserDAO();
+                                LocalDb localDb = new LocalDb((AppCompatActivity) getActivity(), "app.db", null, 1, myAccount + "_list");
+                                SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
+                                userDao.updateListItem(sqliteDatabase, myAccount, content);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+
+                    holder.mCheckBox.setChecked(false);
+                    arrayList.remove(getItem(position).toString());
+                    notifyDataSetChanged();
+                }
+            });
+
+            return convertView;
+        }
+
+        class ViewHolder {
+            TextView mTextView;
+            CheckBox mCheckBox;
         }
     }
 
@@ -120,5 +173,32 @@ public class DashboardFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
         // TODO: Use the ViewModel
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LocalDb localDb = new LocalDb((AppCompatActivity) getActivity(), "app.db", null, 1, myAccount + "_list");
+        SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
+
+        UserDAO userDao = new UserDAO();
+        List<List<String>> selectRes = new ArrayList<>();
+        try {
+            selectRes = userDao.selectListItem(sqliteDatabase, myAccount);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        items.clear();
+
+        if (selectRes != null) {
+            for (int i = 0; i < selectRes.size(); i++) {
+                List<String> temp = selectRes.get(i);
+                items.add(temp.get(0));
+            }
+        }
+        adapter = new ListAdapter((AppCompatActivity)getActivity(), items);
+        mlistView = (ListView) view.findViewById(R.id.toDoList);
+        mlistView.setAdapter(adapter);
     }
 }
