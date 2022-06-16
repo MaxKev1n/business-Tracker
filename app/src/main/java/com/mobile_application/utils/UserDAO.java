@@ -422,6 +422,121 @@ public class UserDAO {
         return null;
     }
 
+    public void insertRemoteListItem(String account, String content, String time) throws Exception {
+        Connection conn = null;
+        Statement state = null;
+        ResultSet res = null;
+        try {
+            conn = JDBCUtils.getConn();
+            if(conn == null) {
+                return;
+            }
+            state = conn.createStatement();
+            String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = 'app' and TABLE_NAME ='" + account + "_list" + "';";
+            res = state.executeQuery(sql);
+            if(res.next()) {
+                sql = "insert into " + account + "_list" + " (content, time) values('" + content + "','" + time + "');";
+                state.executeUpdate(sql);
+            }
+            else {
+                sql = "CREATE TABLE `app`.`" + account + "_list" + "` (`content` VARCHAR(45) NOT NULL,`time` VARCHAR(45) NOT NULL,PRIMARY KEY (`content`));";
+                state.executeUpdate(sql);
+                sql = "insert into " + account + "_list" + " (content, time) values('" + content + "','" + time + "');";
+                state.executeUpdate(sql);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(res != null) {
+                res.close();
+            }
+            if(state != null) {
+                state.close();
+            }
+            if(conn != null) {
+                conn.close();
+            }
+        }
+    }
+
+    public List<List<String>> selectRemoteListItem(String account) throws SQLException {
+        Connection conn = null;
+        Statement state = null;
+        ResultSet res = null;
+        try {
+            conn = JDBCUtils.getConn();
+            if(conn == null) {
+                return null;
+            }
+            state = conn.createStatement();
+            String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = 'app' and TABLE_NAME ='" + account + "_list" +"';";
+            res = state.executeQuery(sql);
+            if(res.next()) {
+                sql = "select * from " + account + "_list" + ";";
+                res = state.executeQuery(sql);
+                List<List<String>> listRes = new ArrayList<>();
+                while(res.next()) {
+                    List<String> temp = new ArrayList<>();
+                    temp.add(res.getString("content"));
+                    temp.add(res.getString("time"));
+                    listRes.add(temp);
+                }
+                return listRes;
+            }
+            else {
+                sql = "CREATE TABLE `app`.`" + account + "_list" + "` (`content` VARCHAR(45) NOT NULL,`time` VARCHAR(45) NOT NULL,PRIMARY KEY (`content`));";
+                state.executeUpdate(sql);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(res != null) {
+                res.close();
+            }
+            if(state != null) {
+                state.close();
+            }
+            if(conn != null) {
+                conn.close();
+            }
+        }
+        return null;
+    }
+
+    public void deleteRemoteListItem(String account, String content) throws Exception {
+        Connection conn = null;
+        Statement state = null;
+        ResultSet res = null;
+        try {
+            conn = JDBCUtils.getConn();
+            if(conn == null) {
+                return;
+            }
+            state = conn.createStatement();
+            String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = 'app' and TABLE_NAME ='" + account + "_list" + "';";
+            res = state.executeQuery(sql);
+            if(res.next()) {
+                sql = "DELETE FROM "+ account + "_list" + " WHERE (`content` = '" + content + "');";
+                state.executeUpdate(sql);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(res != null) {
+                res.close();
+            }
+            if(state != null) {
+                state.close();
+            }
+            if(conn != null) {
+                conn.close();
+            }
+        }
+    }
+
     //SQLite
     public void insertUserSign(SQLiteDatabase db, String myAccount, String curDate, int studyTime, String time) {
         String selectTable = "select count(*) from sqlite_master where type='table' and name='" + myAccount + "'";
@@ -553,7 +668,7 @@ public class UserDAO {
         return null;
     }
 
-    public void insertListItem(SQLiteDatabase db, String account, String time, String content) throws  SQLException{
+    public void insertListItem(SQLiteDatabase db, String account, String content, String time) throws  SQLException{
         String selectTable = "select count(*) from sqlite_master where type='table' and name='" + account + "_list" + "'";
         try {
             Cursor cursor = db.rawQuery(selectTable, null);
@@ -606,7 +721,7 @@ public class UserDAO {
         return null;
     }
 
-    public void updateListItem(SQLiteDatabase db, String account, String content) {
+    public void deleteListItem(SQLiteDatabase db, String account, String content, String curDate, String studyTime, String time) {
         String selectTable = "select count(*) from sqlite_master where type='table' and name='" + account + "_list" + "'";
         try {
             Cursor cursor = db.rawQuery(selectTable, null);
@@ -614,9 +729,22 @@ public class UserDAO {
                 if(cursor.getInt(0) > 0) {
                     db.delete(account + "_list", "content = ?", new String[] {content});
                     //update user table
+                    String selectUser = "select count(*) from sqlite_master where type='table' and name='" + account + "'";
+                    cursor = db.rawQuery(selectUser, null);
+                    if(cursor.moveToNext() && cursor.getInt(0) > 0) {
+                        ContentValues values = new ContentValues();
+                        values.put("curdate", curDate);
+                        values.put("studytime", studyTime);
+                        values.put("time", time);
+                        db.insert(account, null, values);
+                    }
+                    else {
+                        String createTable = "create table '" + account + "' (content text primary key, time text);";
+                        db.execSQL(createTable);
+                    }
                 }
                 else {
-                    String createTable = "create table '" + account + "_list" + "' (content text primary key, time text);";
+                    String createTable = "create table '" + account + "' (curdate text primary key, studytime integer, time text);";
                     db.execSQL(createTable);
                 }
             }
@@ -646,6 +774,25 @@ public class UserDAO {
                 String studyTime = temp.get(1).toString();
                 String time = temp.get(2).toString();
                 updateRemoteData(account, date, studyTime, time);
+            }
+        }
+    }
+
+    public void synchronizeListItem( SQLiteDatabase db, String account) throws Exception {
+        List<List<String>> listRes = selectListItem(db, account);
+        for(int i = 0;i < listRes.size();i++) {
+            String content = listRes.get(i).get(0);
+            String time = listRes.get(i).get(1);
+            insertRemoteListItem(account, content, time);
+        }
+
+        List<List<String>> remoteListRes = selectRemoteListItem(account);
+        if(remoteListRes != null) {
+            for(int i = 0;i < remoteListRes.size();i++){
+                List<String> temp = remoteListRes.get(i);
+                String content = temp.get(0).toString();
+                String time = temp.get(1).toString();
+                insertListItem(db, account, content, time);
             }
         }
     }

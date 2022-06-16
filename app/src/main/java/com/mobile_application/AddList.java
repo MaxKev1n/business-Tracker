@@ -39,8 +39,10 @@ public class AddList extends AppCompatActivity {
                         SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
                         UserDAO userDao = new UserDAO();
                         try {
-                            userDao.insertListItem(sqliteDatabase, myAccount, time, content);
-                        } catch (SQLException throwables) {
+                            userDao.insertListItem(sqliteDatabase, myAccount, content, time);
+                            userDao.insertRemoteListItem(myAccount, content, time);
+                            userDao.synchronizeListItem(sqliteDatabase, myAccount);
+                        } catch (Exception throwables) {
                             throwables.printStackTrace();
                         }
                     }

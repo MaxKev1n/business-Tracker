@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,7 @@ public class DashboardFragment extends Fragment {
     private DashboardViewModel mViewModel;
     private ListView mlistView;
     private Button mButtonAddList;
-    private  List<String> items = new ArrayList<>();
+    private List<List<String>> items = new ArrayList<>();
     private String myAccount;
     private int connectFlag;
     private ListAdapter adapter;
@@ -62,6 +63,11 @@ public class DashboardFragment extends Fragment {
         SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
 
         UserDAO userDao = new UserDAO();
+        try {
+            userDao.synchronizeListItem(sqliteDatabase, myAccount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         List<List<String>> selectRes = new ArrayList<>();
         try {
             selectRes = userDao.selectListItem(sqliteDatabase, myAccount);
@@ -70,10 +76,7 @@ public class DashboardFragment extends Fragment {
         }
 
         if(selectRes != null) {
-            for(int i = 0;i < selectRes.size();i++) {
-                List<String> temp = selectRes.get(i);
-                items.add(temp.get(0));
-            }
+            items = selectRes;
         }
 
         adapter = new ListAdapter((AppCompatActivity)getActivity(), items);
@@ -95,10 +98,10 @@ public class DashboardFragment extends Fragment {
 
     class ListAdapter extends BaseAdapter {
         Context mcontext;
-        List<String> arrayList;
+        List<List<String>> arrayList;
         LayoutInflater inflater;
 
-        public ListAdapter(Context context, List<String> list) {
+        public ListAdapter(Context context, List<List<String>> list) {
             this.mcontext = context;
             this.arrayList = list;
             inflater = LayoutInflater.from(mcontext);
@@ -111,7 +114,7 @@ public class DashboardFragment extends Fragment {
 
         @Override
         public Object getItem(int position) {
-            return arrayList.get(position);
+            return (arrayList.get(position)).get(0);
         }
 
         @Override
@@ -132,13 +135,14 @@ public class DashboardFragment extends Fragment {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            holder.mTextView.setText(arrayList.get(position).toString());
+            holder.mTextView.setText((arrayList.get(position)).get(0).toString());
             //holder.mCheckBox.setTag(position);
 
             holder.mCheckBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String content = getItem(position).toString();
+                    String studyTime = arrayList.get(position).get(1);
                     holder.mCheckBox.setChecked(false);
                     arrayList.remove(position);
                     notifyDataSetChanged();
@@ -148,8 +152,13 @@ public class DashboardFragment extends Fragment {
                             try {
                                 UserDAO userDao = new UserDAO();
                                 LocalDb localDb = new LocalDb((AppCompatActivity) getActivity(), "app.db", null, 1, myAccount + "_list");
+                                Time time = new Time();
+                                time.setToNow();
+                                String curDate = String.valueOf(time.year) + "-" + String.valueOf(time.month + 1) + "-" + String.valueOf(time.monthDay);
+                                String insertTime = String.valueOf(time.year) + "-" + String.valueOf(time.month + 1) + "-" + String.valueOf(time.monthDay) + " " + String.valueOf(time.hour) + ":" + String.valueOf(time.minute) + ":" + String.valueOf(time.second);
                                 SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
-                                userDao.updateListItem(sqliteDatabase, myAccount, content);
+                                userDao.deleteListItem(sqliteDatabase, myAccount, content, curDate, studyTime, insertTime);
+                                userDao.deleteRemoteListItem(myAccount, content);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -182,6 +191,22 @@ public class DashboardFragment extends Fragment {
         SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
 
         UserDAO userDao = new UserDAO();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    userDao.synchronizeListItem(sqliteDatabase, myAccount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<List<String>> selectRes = new ArrayList<>();
         try {
             selectRes = userDao.selectListItem(sqliteDatabase, myAccount);
@@ -192,10 +217,7 @@ public class DashboardFragment extends Fragment {
         items.clear();
 
         if (selectRes != null) {
-            for (int i = 0; i < selectRes.size(); i++) {
-                List<String> temp = selectRes.get(i);
-                items.add(temp.get(0));
-            }
+            items = selectRes;
         }
         adapter = new ListAdapter((AppCompatActivity)getActivity(), items);
         mlistView = (ListView) view.findViewById(R.id.toDoList);
