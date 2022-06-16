@@ -295,6 +295,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/list4"
                 app:layout_constraintTop_toBottomOf="@+id/listLine3" />
 
+<<<<<<< Updated upstream
             <View
                 android:id="@+id/viewNotice"
                 android:layout_width="354dp"
@@ -315,6 +316,8 @@
                 app:layout_constraintStart_toStartOf="@+id/viewNotice"
                 app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
 
+=======
+>>>>>>> Stashed changes
             <Button
                 android:id="@+id/buttonLogOut"
                 android:layout_width="wrap_content"
@@ -328,11 +331,11 @@
                 android:id="@+id/buttonConfirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
                 android:text="确定"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.352"
                 app:layout_constraintStart_toEndOf="@+id/buttonLogOut"
+<<<<<<< Updated upstream
                 app:layout_constraintTop_toBottomOf="@+id/viewNotice" />
 
             <CheckBox
@@ -362,6 +365,9 @@
                 app:layout_constraintEnd_toEndOf="@+id/viewNotice"
                 app:layout_constraintStart_toStartOf="@+id/viewNotice"
                 app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+=======
+                tools:layout_editor_absoluteY="610dp" />
+>>>>>>> Stashed changes
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"
@@ -370,6 +376,7 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_begin="205dp" />
 
+<<<<<<< Updated upstream
             <View
                 android:id="@+id/listLineNotice1"
                 android:layout_width="250dp"
@@ -379,6 +386,8 @@
                 app:layout_constraintStart_toStartOf="@+id/viewNotice"
                 app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
+=======
+>>>>>>> Stashed changes
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
