@@ -111,7 +111,7 @@ public class DashboardFragment extends Fragment {
 
         @Override
         public Object getItem(int position) {
-            return arrayList.get(position).toString();
+            return arrayList.get(position);
         }
 
         @Override
@@ -126,18 +126,22 @@ public class DashboardFragment extends Fragment {
                 holder = new ViewHolder();
                 convertView = inflater.inflate(R.layout.list_item, null);
                 holder.mTextView = (TextView) convertView.findViewById(R.id.itemName);
-                holder.mTextView.setText(arrayList.get(position).toString());
                 holder.mCheckBox = (CheckBox) convertView.findViewById(R.id.checkDone);
-                holder.mCheckBox.setTag(position);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            holder.mTextView.setText(arrayList.get(position).toString());
+            //holder.mCheckBox.setTag(position);
+
+            holder.mCheckBox.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                public void onClick(View view) {
                     String content = getItem(position).toString();
+                    holder.mCheckBox.setChecked(false);
+                    arrayList.remove(position);
+                    notifyDataSetChanged();
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -151,10 +155,6 @@ public class DashboardFragment extends Fragment {
                             }
                         }
                     }).start();
-
-                    holder.mCheckBox.setChecked(false);
-                    arrayList.remove(getItem(position).toString());
-                    notifyDataSetChanged();
                 }
             });
 

@@ -27,7 +27,7 @@
     <View
         android:id="@+id/viewList"
         android:layout_width="354dp"
-        android:layout_height="1000dp"
+        android:layout_height="500dp"
         android:layout_marginTop="88dp"
         android:background="@drawable/shape_view"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,8 +38,8 @@
     <ListView
         android:id="@+id/toDoList"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_height="480dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="@+id/viewList"
         app:layout_constraintStart_toStartOf="@+id/viewList"
         app:layout_constraintTop_toTopOf="@+id/viewList" />
