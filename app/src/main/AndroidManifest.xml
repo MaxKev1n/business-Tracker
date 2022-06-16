@@ -17,6 +17,7 @@
         android:theme="@style/Theme.Mobile_application">
         <activity
             android:name=".AddList"
+            android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".Home"
