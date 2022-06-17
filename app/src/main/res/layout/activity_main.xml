@@ -131,5 +131,18 @@
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@mipmap/life" />
 
+    <ImageView
+        android:id="@+id/imageView15"
+        android:layout_width="194dp"
+        android:layout_height="149dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@mipmap/business_tracker" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
