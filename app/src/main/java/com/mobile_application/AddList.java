@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.method.DigitsKeyListener;
 import android.view.View;
 
 import com.mobile_application.databinding.ActivityAddListBinding;
@@ -26,6 +27,7 @@ public class AddList extends AppCompatActivity {
 
         Intent intent = this.getIntent();
         myAccount = intent.getStringExtra("myAccount").toString();
+        viewBinding.textTime.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
 
         viewBinding.buttonAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
