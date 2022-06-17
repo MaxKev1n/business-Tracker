@@ -9,50 +9,52 @@
 
     <View
         android:id="@+id/view2"
-        android:layout_width="374dp"
-        android:layout_height="567dp"
-        android:background="@drawable/shape_view"
+        android:layout_width="354dp"
+        android:layout_height="385dp"
+        android:background="@drawable/round_view"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView9"
+        app:layout_constraintVertical_bias="0.36" />
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
+        android:layout_marginStart="43dp"
+        android:layout_marginBottom="16dp"
         android:text="登录"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@+id/view2"
         app:layout_constraintTop_toBottomOf="@+id/autoLogin"
-        app:layout_constraintVertical_bias="0.243" />
+        app:layout_constraintVertical_bias="0.647" />
 
     <EditText
         android:id="@+id/editTextAccount"
         android:layout_width="209dp"
         android:layout_height="55dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="28dp"
         android:ems="10"
         android:hint="用户账号"
         android:inputType="textPersonName"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/view2" />
 
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="28dp"
         android:ems="10"
         android:hint="密码"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextAccount" />
 
@@ -61,8 +63,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="88dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginBottom="16dp"
         android:text="注册"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
         app:layout_constraintStart_toEndOf="@+id/buttonLogin"
         app:layout_constraintTop_toTopOf="@+id/buttonLogin"
         app:layout_constraintVertical_bias="0.0" />
@@ -101,10 +106,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="24dp"
         android:text="记住密码"
         app:layout_constraintStart_toStartOf="@+id/view2"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="413dp"
+        android:layout_height="357dp"
+        android:layout_marginBottom="436dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@mipmap/blue_white1" />
+
+    <ImageView
+        android:id="@+id/imageView16"
+        android:layout_width="201dp"
+        android:layout_height="105dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@mipmap/life" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
