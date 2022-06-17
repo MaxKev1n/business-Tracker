@@ -9,14 +9,16 @@
 
     <View
         android:id="@+id/view2"
-        android:layout_width="374dp"
-        android:layout_height="567dp"
-        android:background="@drawable/shape_view"
+        android:layout_width="351dp"
+        android:layout_height="396dp"
+        android:background="@drawable/round_view"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.946" />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -42,7 +44,7 @@
         android:id="@+id/editTextAccount"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="344dp"
         android:ems="10"
         android:hint="用户账号"
         android:inputType="textPersonName"
@@ -69,6 +71,7 @@
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_view"
         android:text="注册"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,11 +84,12 @@
         android:id="@+id/editTextName"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="36dp"
         android:ems="10"
         android:hint="用户名"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextAccount" />
 
@@ -98,5 +102,42 @@
         app:layout_constraintEnd_toStartOf="@+id/editTextName"
         app:layout_constraintTop_toTopOf="@+id/editTextName"
         app:srcCompat="@drawable/ic_mood_happy_solid" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="490dp"
+        android:layout_height="364dp"
+        android:layout_marginBottom="444dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@mipmap/blue_white1" />
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="201dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="128dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@mipmap/life" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
