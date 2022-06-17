@@ -91,7 +91,7 @@ public class SettingsFragment extends Fragment {
                         if(!dir.exists()) {
                             dir.mkdir();
                         }
-                        File saveFile = new File(savePath, "userImg.jpeg");
+                        File saveFile = new File(savePath, myAccount+"Img.jpeg");
                         saveFile.createNewFile();
                         FileOutputStream saveImg = new FileOutputStream(saveFile);
                         ((Home)getActivity()).curBitmap.compress(Bitmap.CompressFormat.JPEG, 80, saveImg);
@@ -99,10 +99,11 @@ public class SettingsFragment extends Fragment {
                         saveImg.close();
                     }
                     else {
-                        File userImg = new File(getActivity().getFilesDir()+ "/imgs/", "userImg.jpeg");
+                        File userImg = new File(getActivity().getFilesDir()+ "/imgs/", myAccount+"Img.jpeg");
                         if(userImg.exists()) {
-                            ((Home)getActivity()).curBitmap = BitmapFactory.decodeFile(getActivity().getFilesDir()+ "/imgs/userImg.jpeg");
+                            ((Home)getActivity()).curBitmap = BitmapFactory.decodeFile(getActivity().getFilesDir()+ "/imgs/" + myAccount+"Img.jpeg");
                         }
+
                     }
 
                 } catch (Exception e) {
@@ -117,9 +118,9 @@ public class SettingsFragment extends Fragment {
             thread.start();
         }
         else if(isFirstView){
-            File userImg = new File(getActivity().getFilesDir()+ "/imgs/", "userImg.jpeg");
+            File userImg = new File(getActivity().getFilesDir()+ "/imgs/", myAccount+"Img.jpeg");
             if(userImg.exists()) {
-                ((Home)getActivity()).curBitmap = BitmapFactory.decodeFile(getActivity().getFilesDir()+ "/imgs/userImg.jpeg");
+                ((Home)getActivity()).curBitmap = BitmapFactory.decodeFile(getActivity().getFilesDir()+ "/imgs/"+myAccount+"Img.jpeg");
             }
         }
         try {
@@ -127,7 +128,11 @@ public class SettingsFragment extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        viewBinding.userImg.setImageBitmap(((Home)getActivity()).curBitmap);
+
+        if(((Home)getActivity()).curBitmap != null) {
+            viewBinding.userImg.setImageBitmap(((Home)getActivity()).curBitmap);
+        }
+
         viewBinding.textName.setText(myAccount);
         if(((Home)getActivity()).isView == 0 || ((Home)getActivity()).isView == 2) {
             viewBinding.switchView.setChecked(false);
@@ -269,7 +274,7 @@ public class SettingsFragment extends Fragment {
                     if(!dir.exists()) {
                         dir.mkdir();
                     }
-                    File saveFile = new File(savePath, "userImg.jpeg");
+                    File saveFile = new File(savePath, myAccount+"Img.jpeg");
                     saveFile.createNewFile();
                     FileOutputStream saveImg = new FileOutputStream(saveFile);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 80, saveImg);
