@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -136,34 +138,81 @@ public class DashboardFragment extends Fragment {
             }
 
             holder.mTextView.setText((arrayList.get(position)).get(0).toString());
-            //holder.mCheckBox.setTag(position);
+            holder.mCheckBox.setTag(position);
+            holder.mTextView.setTag(position);
 
             holder.mCheckBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String content = getItem(position).toString();
-                    String studyTime = arrayList.get(position).get(1);
-                    holder.mCheckBox.setChecked(false);
-                    arrayList.remove(position);
-                    notifyDataSetChanged();
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                UserDAO userDao = new UserDAO();
-                                LocalDb localDb = new LocalDb((AppCompatActivity) getActivity(), "app.db", null, 1, myAccount + "_list");
-                                Time time = new Time();
-                                time.setToNow();
-                                String curDate = String.valueOf(time.year) + "-" + String.valueOf(time.month + 1) + "-" + String.valueOf(time.monthDay);
-                                String insertTime = String.valueOf(time.year) + "-" + String.valueOf(time.month + 1) + "-" + String.valueOf(time.monthDay) + " " + String.valueOf(time.hour) + ":" + String.valueOf(time.minute) + ":" + String.valueOf(time.second);
-                                SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
-                                userDao.deleteListItem(sqliteDatabase, myAccount, content, curDate, studyTime, insertTime);
-                                userDao.deleteRemoteListItem(myAccount, content);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                    switch (view.getId()) {
+                        case R.id.itemName:{
+                            Toast.makeText((AppCompatActivity)getActivity(), "该任务完成时间需要" + arrayList.get(position).get(1) + "分钟", Toast.LENGTH_LONG).show();
+                            break;
                         }
-                    }).start();
+                        case R.id.checkDone:{
+                            String content = getItem(position).toString();
+                            String studyTime = arrayList.get(position).get(1);
+                            holder.mCheckBox.setChecked(false);
+                            arrayList.remove(position);
+                            notifyDataSetChanged();
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        UserDAO userDao = new UserDAO();
+                                        LocalDb localDb = new LocalDb((AppCompatActivity) getActivity(), "app.db", null, 1, myAccount + "_list");
+                                        Time time = new Time();
+                                        time.setToNow();
+                                        String curDate = String.valueOf(time.year) + "-" + String.valueOf(time.month + 1) + "-" + String.valueOf(time.monthDay);
+                                        String insertTime = String.valueOf(time.year) + "-" + String.valueOf(time.month + 1) + "-" + String.valueOf(time.monthDay) + " " + String.valueOf(time.hour) + ":" + String.valueOf(time.minute) + ":" + String.valueOf(time.second);
+                                        SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
+                                        userDao.deleteListItem(sqliteDatabase, myAccount, content, curDate, studyTime, insertTime);
+                                        userDao.deleteRemoteListItem(myAccount, content);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).start();
+                            break;
+                        }
+                    }
+                }
+            });
+            holder.mTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switch (view.getId()) {
+                        case R.id.itemName:{
+                            Toast.makeText((AppCompatActivity)getActivity(), "该任务完成时间需要" + arrayList.get(position).get(1) + "分钟", Toast.LENGTH_LONG).show();
+                            break;
+                        }
+                        case R.id.checkDone:{
+                            String content = getItem(position).toString();
+                            String studyTime = arrayList.get(position).get(1);
+                            holder.mCheckBox.setChecked(false);
+                            arrayList.remove(position);
+                            notifyDataSetChanged();
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        UserDAO userDao = new UserDAO();
+                                        LocalDb localDb = new LocalDb((AppCompatActivity) getActivity(), "app.db", null, 1, myAccount + "_list");
+                                        Time time = new Time();
+                                        time.setToNow();
+                                        String curDate = String.valueOf(time.year) + "-" + String.valueOf(time.month + 1) + "-" + String.valueOf(time.monthDay);
+                                        String insertTime = String.valueOf(time.year) + "-" + String.valueOf(time.month + 1) + "-" + String.valueOf(time.monthDay) + " " + String.valueOf(time.hour) + ":" + String.valueOf(time.minute) + ":" + String.valueOf(time.second);
+                                        SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
+                                        userDao.deleteListItem(sqliteDatabase, myAccount, content, curDate, studyTime, insertTime);
+                                        userDao.deleteRemoteListItem(myAccount, content);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).start();
+                            break;
+                        }
+                    }
                 }
             });
 
