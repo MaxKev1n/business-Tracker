@@ -65,11 +65,23 @@ public class DashboardFragment extends Fragment {
         SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
 
         UserDAO userDao = new UserDAO();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    userDao.synchronizeListItem(sqliteDatabase, myAccount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
         try {
-            userDao.synchronizeListItem(sqliteDatabase, myAccount);
-        } catch (Exception e) {
+            thread.join();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         List<List<String>> selectRes = new ArrayList<>();
         try {
             selectRes = userDao.selectListItem(sqliteDatabase, myAccount);

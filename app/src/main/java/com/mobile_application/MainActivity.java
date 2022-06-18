@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         int res = 0;
                         try {
                             res = userDao.select(viewBinding.editTextAccount.getText().toString(), viewBinding.editTextPassword.getText().toString());
+                            Log.d(TAG, String.valueOf(res));
                             if(res == 1) {
                                 synchronizeRecord(viewBinding.editTextAccount.getText().toString(), userDao);
                             }
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "连接失败，进入本地模式", Toast.LENGTH_SHORT).show();
                             connectFlag = 0;
                         }
-                        else {
+                        else if(msg.what == 1) {
                             Toast.makeText(MainActivity.this, "登录成功，进行同步", Toast.LENGTH_SHORT).show();
                             connectFlag = 1;
                         }
