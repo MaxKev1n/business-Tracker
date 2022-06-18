@@ -185,7 +185,7 @@ public class SettingsFragment extends Fragment {
         viewBinding.buttonWebRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse("https://github.com/MaxKev1n/mobile_application");
+                Uri uri = Uri.parse("https://github.com/MaXKev1n/mobile_application/issues");
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     intent.setClassName("com.android.chrome","com.google.android.apps.chrome.Main");

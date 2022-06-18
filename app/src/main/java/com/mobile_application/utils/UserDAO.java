@@ -63,7 +63,7 @@ public class UserDAO {
                 conn.close();
             }
         }
-        return 0;
+        return 2;
     }
 
     public int add(String account, String name, String password) throws Exception {
@@ -164,7 +164,7 @@ public class UserDAO {
                 return 0;
             }
             state = conn.createStatement();
-            String selectSql = "select * from " + account + " where curdate = '" + curDate + "';";
+            String selectSql = "select * from " + account + " where time = '" + time + "';";
             res = state.executeQuery(selectSql);
             if(!res.next()) {
                 String sql = "insert into `" + account + "` (curdate, studytime, time) values('" + curDate + "','" + studyTime + "','" + time + "');";
@@ -395,7 +395,7 @@ public class UserDAO {
                 res = state.executeQuery(sql);
                 List<String> listRes = new ArrayList<>();
                 while(res.next()) {
-                    totalList += Integer.valueOf(res.getString("listcount"));
+                    totalList ++;
                     totalTime += Integer.valueOf(res.getString("studytime"));
                 }
                 listRes.add(String.valueOf(totalList));
@@ -555,7 +555,7 @@ public class UserDAO {
                     }
                 }
                 else {
-                    String createTable = "create table '" + myAccount + "' (curdate text primary key, studytime integer, time text);";
+                    String createTable = "create table '" + myAccount + "' (curdate text, studytime integer, time text primary key);";
                     db.execSQL(createTable);
                 }
             }
@@ -573,7 +573,7 @@ public class UserDAO {
                     Log.d(TAG, "exist table");
                 }
                 else {
-                    String createTable = "create table '" + myAccount + "' (curdate text primary key, studytime integer, time text);";
+                    String createTable = "create table '" + myAccount + "' (curdate text, studytime integer, time text primary key);";
                     db.execSQL(createTable);
                 }
             }
@@ -656,7 +656,7 @@ public class UserDAO {
                     return listRes;
                 }
                 else {
-                    String createTable = "create table '" + account + "' (curdate text primary key, studytime integer, time text);";
+                    String createTable = "create table '" + account + "' (curdate text, studytime integer, time text primary key);";
                     db.execSQL(createTable);
                     return null;
                 }
@@ -744,7 +744,7 @@ public class UserDAO {
                     }
                 }
                 else {
-                    String createTable = "create table '" + account + "' (curdate text primary key, studytime integer, time text);";
+                    String createTable = "create table '" + account + "' (curdate text, studytime integer, time text primary key);";
                     db.execSQL(createTable);
                 }
             }

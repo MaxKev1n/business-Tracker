@@ -25,6 +25,7 @@ import com.mobile_application.databinding.FragmentHomeBinding;
 import com.mobile_application.utils.LocalDb;
 import com.mobile_application.utils.UserDAO;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,18 @@ public class HomeFragment extends Fragment {
             viewBinding.totalListNum.setText(Html.fromHtml(curListDisplay));
             viewBinding.totalTimeNum.setText(Html.fromHtml(curTimeDisplay));
         }
+        String curDate = new SimpleDateFormat("yyyy-M-dd").format(new Date(viewBinding.calendarView.getDate())).toString();
+        List<String> selectRes = userDAO.selectUserSign(sqliteDatabase, myAccount, curDate);
+        String display;
+        if(selectRes.isEmpty()){
+            display = "您在该日完成" + "<font color=black><b><big><big>0</big></big></b></font>项任务，学习时间为<font color=black><b><big><big>0</big></big></b></font>分钟";
+        }
+        else {
+            display = "您在该日完成" + "<font color=black><b><big><big>" + selectRes.get(0) + "</big></big></b></font>" + "项任务，学习时间为" + "<font color=black><b><big><big>" + selectRes.get(1) + "</big></big></b></font>" + "分钟";
+        }
+        viewBinding.textSign.setText(Html.fromHtml(display));
     }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -64,27 +76,20 @@ public class HomeFragment extends Fragment {
         connectFlag = Integer.valueOf(intent.getStringExtra("connectFlag")).intValue();
         myAccount = intent.getStringExtra("myAccount").toString();
 
-        Time time = new Time();
-        time.setToNow();
-        String curDate = String.valueOf(time.year) + "-" + String.valueOf(time.month + 1) + "-" + String.valueOf(time.monthDay);
         LocalDb localDb = new LocalDb((AppCompatActivity) getActivity(), "app.db", null, 1, myAccount);
         SQLiteDatabase sqliteDatabase = localDb.getWritableDatabase();
         UserDAO userDAO = new UserDAO();
-        List<String> curData = userDAO.selectUserSign(sqliteDatabase, myAccount, curDate);
-        String curDisplay;
-        if(curData.isEmpty()){
-            curDisplay = "您在该日完成" + "<font color=black><b><big><big>0</big></big></b></font>项任务，学习时间为<font color=black><b><big><big>0</big></big></b></font>分钟";
-        }
-        else {
-            curDisplay = "您在该日完成" + "<font color=black><b><big><big>" + curData.get(0) + "</big></big></b></font>" + "项任务，学习时间为" + "<font color=black><b><big><big>" + curData.get(1) + "</big></big></b></font>" + "分钟";
-        }
-        viewBinding.textSign.setText(Html.fromHtml(curDisplay));
 
-        try {
-            totalDataDisplay(userDAO, sqliteDatabase);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    totalDataDisplay(userDAO, sqliteDatabase);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         viewBinding.freshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
