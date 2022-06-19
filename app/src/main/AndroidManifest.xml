@@ -15,6 +15,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile_application">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@drawable/round_view" />
+
         <activity
             android:name=".AddList"
             android:parentActivityName=".MainActivity"
