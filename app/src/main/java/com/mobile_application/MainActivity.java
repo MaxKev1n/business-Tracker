@@ -49,6 +49,15 @@ public class MainActivity extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isRemember = preferences.getBoolean("rememberPassword", false);
         boolean isAutoLogin = preferences.getBoolean("autoLogin", false);
+
+        Intent intent = this.getIntent();
+        String logOut = intent.getStringExtra("logOut");
+        Log.d(TAG, "onCreate: "+logOut);
+        if(logOut != null) {
+            isAutoLogin = false;
+            viewBinding.autoLogin.setChecked(false);
+        }
+
         if(isRemember) {
             String account = preferences.getString("account", "");
             String password = preferences.getString("password", "");

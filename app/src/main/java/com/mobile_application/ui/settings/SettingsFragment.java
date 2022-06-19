@@ -202,7 +202,9 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 Config.clear((AppCompatActivity)getActivity());
                 Intent intent = new Intent((AppCompatActivity)getActivity(), MainActivity.class);
+                intent.putExtra("logOut", String.valueOf(1));
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
