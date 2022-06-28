@@ -11,8 +11,8 @@ public class JDBCUtils {
         Connection connection = null;
         try{
             Class.forName(driver).newInstance();
-            String url = "jdbc:mysql://150.158.15.138:3306/app?useSSL=False";
-            connection = DriverManager.getConnection(url, "root", "njust");
+            String url = "jdbc:mysql://ip:port/db_name?useSSL=False";
+            connection = DriverManager.getConnection(url, "username", "pasword");
 
         }catch (Exception e){
             e.printStackTrace();
