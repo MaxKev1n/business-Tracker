@@ -1,4 +1,4 @@
-# mobile_application
+# Business Tracker
 **这是移动应用开发大作业**
 ## 功能点
 * 登录
